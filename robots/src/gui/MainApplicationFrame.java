@@ -56,7 +56,7 @@ public class MainApplicationFrame extends JFrame
         logWindow.setSize(300, 800);
         setMinimumSize(logWindow.getSize());
         logWindow.pack();
-        Logger.debug("Протокол работает");
+        Logger.debug("Protocol is working");//Протокол работает
         return logWindow;
     }
     
@@ -99,13 +99,13 @@ public class MainApplicationFrame extends JFrame
     {
         JMenuBar menuBar = new JMenuBar();
         
-        JMenu lookAndFeelMenu = new JMenu("Режим отображения");
+        JMenu lookAndFeelMenu = new JMenu("View options");//Режим отображения
         lookAndFeelMenu.setMnemonic(KeyEvent.VK_V);
         lookAndFeelMenu.getAccessibleContext().setAccessibleDescription(
-                "Управление режимом отображения приложения");
+                "Managing the application display mode");//Управление режимом отображения приложения
         
         {
-            JMenuItem systemLookAndFeel = new JMenuItem("Системная схема", KeyEvent.VK_S);
+            JMenuItem systemLookAndFeel = new JMenuItem("System schecme", KeyEvent.VK_S);//Системная схема
             systemLookAndFeel.addActionListener((event) -> {
                 setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 this.invalidate();
@@ -114,7 +114,7 @@ public class MainApplicationFrame extends JFrame
         }
 
         {
-            JMenuItem crossplatformLookAndFeel = new JMenuItem("Универсальная схема", KeyEvent.VK_S);
+            JMenuItem crossplatformLookAndFeel = new JMenuItem("Universal scheme", KeyEvent.VK_S);//Универсальная схема
             crossplatformLookAndFeel.addActionListener((event) -> {
                 setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 this.invalidate();
@@ -122,19 +122,27 @@ public class MainApplicationFrame extends JFrame
             lookAndFeelMenu.add(crossplatformLookAndFeel);
         }
 
-        JMenu testMenu = new JMenu("Тесты");
+        JMenu testMenu = new JMenu("Tests");//тесты
         testMenu.setMnemonic(KeyEvent.VK_T);
         testMenu.getAccessibleContext().setAccessibleDescription(
-                "Тестовые команды");
+                "Test commands");//Тестовые команды
         
         {
-            JMenuItem addLogMessageItem = new JMenuItem("Сообщение в лог", KeyEvent.VK_S);
+            JMenuItem addLogMessageItem = new JMenuItem("Massege to log", KeyEvent.VK_S);//Сообщение в лог
             addLogMessageItem.addActionListener((event) -> {
-                Logger.debug("Новая строка");
+                Logger.debug("new string");//Новая строка
             });
             testMenu.add(addLogMessageItem);
         }
 
+        /**Adding menu item to close the application*/
+        {
+            JMenuItem closeMenuItem = new JMenuItem("Close", KeyEvent.VK_C);
+            closeMenuItem.addActionListener((event) -> {
+                dispose();
+            });
+            testMenu.add(closeMenuItem); // Add the close menu item to the test menu
+        }
         menuBar.add(lookAndFeelMenu);
         menuBar.add(testMenu);
         return menuBar;
