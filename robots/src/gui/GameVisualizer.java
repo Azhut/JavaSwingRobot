@@ -73,12 +73,22 @@ public class GameVisualizer extends JPanel {
         double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(),
                 m_targetPositionX, m_targetPositionY);
         double angularVelocity = 0;
-        if (angleToTarget > robotModel.getDirection()) {
-            angularVelocity = maxAngularVelocity;
+
+        if (robotModel.getDirection() - angleToTarget > Math.PI) {
+            robotModel.setDirection(robotModel.getDirection() - 2 * Math.PI);
+        } else if (robotModel.getDirection() - angleToTarget < Math.PI) {
+            robotModel.setDirection(robotModel.getDirection() + 2 * Math.PI);
         }
-        if (angleToTarget < robotModel.getDirection()) {
-            angularVelocity = -maxAngularVelocity;
+
+        double deltaAngle = angleToTarget - robotModel.getDirection();
+        if (deltaAngle > Math.PI) {
+            deltaAngle -= 2 * Math.PI;
+        } else if (deltaAngle < -Math.PI) {
+            deltaAngle += 2 * Math.PI;
         }
+
+        angularVelocity = Math.signum(deltaAngle) * maxAngularVelocity;
+
 
         moveRobot(velocity, angularVelocity, 10);
     }

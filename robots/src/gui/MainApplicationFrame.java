@@ -29,7 +29,7 @@ public class MainApplicationFrame extends JFrame {
         addWindow(gameWindow);
 
         RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
-        robotCoordinatesWindow.setSize(200, 100);
+        robotCoordinatesWindow.setSize(400, 100);
         addWindow(robotCoordinatesWindow);
 
         setJMenuBar(generateMenuBar());

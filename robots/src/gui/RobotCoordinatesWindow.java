@@ -10,7 +10,7 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
 
     public RobotCoordinatesWindow(RobotModel robotModel) {
         super("Robot Coordinates", true, true, true, true);
-        setSize(200, 100);
+
 
         coordinatesLabel = new JLabel("Robot coordinates: ");
         add(coordinatesLabel);
