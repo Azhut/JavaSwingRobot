@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Frame;
 import java.util.Locale;
 
 import javax.swing.*;
@@ -21,7 +20,6 @@ public class RobotsProgram {
             MainApplicationFrame frame = new MainApplicationFrame();
             frame.pack();
             frame.setVisible(true);
-            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
             javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
                 if (frame.isDisposed()) {
