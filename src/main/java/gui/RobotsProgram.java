@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import javax.swing.*;
 
-
 public class RobotsProgram {
     public static void main(String[] args) {
         Locale.setDefault(new Locale("ru", "RU"));
@@ -18,7 +17,6 @@ public class RobotsProgram {
         }
         SwingUtilities.invokeLater(() -> {
             MainApplicationFrame frame = new MainApplicationFrame();
-            frame.pack();
             frame.setVisible(true);
 
             javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
