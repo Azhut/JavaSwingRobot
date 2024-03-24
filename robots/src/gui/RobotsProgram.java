@@ -23,14 +23,14 @@ public class RobotsProgram {
             frame.setVisible(true);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-            javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
-                if (frame.isDisposed()) {
-                    System.out.println("Приложение завершило работу.");
-                    System.exit(0);
-                }
-            });
-            timer.setInitialDelay(0);
-            timer.start();
+//            javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
+//                if (frame.isDisposed()) {
+//                    System.out.println("Приложение завершило работу.");
+//                    System.exit(0);
+//                }
+//            });
+//            timer.setInitialDelay(0);
+//            timer.start();
         });
     }
 }
