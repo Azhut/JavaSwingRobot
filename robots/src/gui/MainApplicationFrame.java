@@ -13,6 +13,7 @@ import log.Logger;
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private boolean disposed = false;
+    private final ConfigManager configManager = new ConfigManager();
 
     public MainApplicationFrame() {
         int inset = 50;
@@ -20,17 +21,23 @@ public class MainApplicationFrame extends JFrame {
         setBounds(inset, inset, screenSize.width - inset * 2, screenSize.height - inset * 2);
         setContentPane(desktopPane);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                configManager.saveConfig(desktopPane, MainApplicationFrame.this);
+            }
+        });
+
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-
         GameWindow gameWindow = new GameWindow();
-        gameWindow.setSize(400, 400);
         addWindow(gameWindow);
 
         RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
-        robotCoordinatesWindow.setSize(400, 100);
         addWindow(robotCoordinatesWindow);
+
+        configManager.loadConfig(desktopPane, this);
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -40,14 +47,10 @@ public class MainApplicationFrame extends JFrame {
                 handleWindowClosing();
             }
         });
-
-
     }
 
     protected LogWindow createLogWindow() {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
-        logWindow.setLocation(10, 10);
-        logWindow.setSize(300, 800);
         setMinimumSize(logWindow.getSize());
         logWindow.pack();
         Logger.debug("Протокол работает");
