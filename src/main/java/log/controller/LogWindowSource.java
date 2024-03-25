@@ -1,4 +1,9 @@
-package log;
+package log.controller;
+
+import log.LogEntry;
+import log.LogLevel;
+import log.controller.LogChangeListener;
+import log.model.LogStorage;
 
 import java.util.LinkedList;
 
@@ -17,6 +22,8 @@ public class LogWindowSource
         m_messages = new LogStorage(iQueueLength);
         m_listeners = new LinkedList<>();
     }
+
+
 
     /**
      * Регистрация слушателя лога

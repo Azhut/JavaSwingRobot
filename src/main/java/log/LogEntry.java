@@ -20,5 +20,10 @@ public class LogEntry
     {
         return m_logLevel;
     }
+
+    public String toString()
+    {
+        return m_logLevel + ": " + m_strMessage;
+    }
 }
 

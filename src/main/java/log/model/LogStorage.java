@@ -1,4 +1,6 @@
-package log;
+package log.model;
+
+import log.LogEntry;
 
 import java.util.*;
 

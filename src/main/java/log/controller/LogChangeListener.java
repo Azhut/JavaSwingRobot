@@ -1,4 +1,4 @@
-package log;
+package log.controller;
 
 public interface LogChangeListener
 {

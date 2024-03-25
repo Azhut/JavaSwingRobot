@@ -1,5 +1,6 @@
-package gui;
+package fileManagers;
 
+import fileManagers.FileManager;
 import log.Logger;
 
 import javax.swing.*;
@@ -11,28 +12,16 @@ import java.util.Properties;
 /**
  * Сохраняет положение окон в файл
  */
-public class ConfigManager
+public class ConfigManager extends FileManager
 {
     private final String configFilePath;
 
     public ConfigManager()
     {
-        String userHome = System.getProperty("user.home");
-        File directory = new File(userHome, "JavaSwingRobot");
-        if (!directory.exists()) {
-            boolean created = directory.mkdir();
-            if (created)
-            {
-                Logger.debug("Рабочая директория успешно создана!");
-            }
-            else
-            {
-                Logger.debug("Не удалось создать директорию");
-            }
-        }
-
-         this.configFilePath = new File(directory,"config.properties").getAbsolutePath();
+        File directory = super.chooseWorkingDirectory();
+        this.configFilePath = new File(directory,"config.properties").getAbsolutePath();
     }
+
     /**
      * Сохраняет конфигурацию приложения
      * @param desktopPane - внутренние фреймы
@@ -165,6 +154,11 @@ public class ConfigManager
                 desktopPane.setComponentZOrder(jInternalFrame, zorder);
             }
         }
+    }
+
+    @Override
+    protected File chooseWorkingDirectory() {
+        return null;
     }
 }
 

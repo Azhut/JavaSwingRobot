@@ -8,6 +8,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+import fileManagers.ConfigManager;
+import log.view.LogWindow;
 import log.Logger;
 
 public class MainApplicationFrame extends JFrame {
