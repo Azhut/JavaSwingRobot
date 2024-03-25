@@ -1,5 +1,7 @@
 package gui;
 
+import log.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyVetoException;
@@ -35,6 +37,7 @@ public class ConfigManager
         }
         catch (IOException e)
         {
+            Logger.error("Неизвестная ошибка");
             e.printStackTrace();
         }
     }
@@ -59,8 +62,37 @@ public class ConfigManager
             loadFrameProperties(properties, jFrame, desktopPane);
 
         }
+        catch (FileNotFoundException e)
+        {
+            Logger.error("Файл конфигурации не найден");
+
+            int x = 0;
+            int y = 0;
+
+            for (JInternalFrame frame : desktopPane.getAllFrames())
+            {
+                frame.setBounds(x, y, 300, 200);
+
+                x += 330;
+
+                if (x >= jFrame.getWidth())
+                {
+                    x = 0;
+                    y += 220;
+                }
+
+                if (y >= jFrame.getHeight())
+                {
+                    x = 20;
+                    y = 0;
+                }
+            }
+
+            e.printStackTrace();
+        }
         catch (IOException e)
         {
+            Logger.error("Неизвестная ошибка");
             e.printStackTrace();
         }
     }
@@ -75,8 +107,8 @@ public class ConfigManager
         String className = frame.getClass().getName();
         properties.setProperty(className + "_x", String.valueOf(frame.getX()));
         properties.setProperty(className + "_y", String.valueOf(frame.getY()));
-        properties.setProperty(className + "_width", String.valueOf(frame.getWidth() > 0 ? frame.getWidth() : 200));
-        properties.setProperty(className + "_height", String.valueOf(frame.getHeight() > 0 ? frame.getHeight() : 200));
+        properties.setProperty(className + "_width", String.valueOf(frame.getWidth()));
+        properties.setProperty(className + "_height", String.valueOf(frame.getHeight()));
         if (frame instanceof JInternalFrame jInternalFrame)
         {
             properties.setProperty(className + "_maximized", String.valueOf((jInternalFrame.isMaximum())));
@@ -95,7 +127,7 @@ public class ConfigManager
         int y = Integer.parseInt(properties.getProperty(className + "_y", String.valueOf(frame.getY())));
         int width = Integer.parseInt(properties.getProperty(className + "_width", String.valueOf(frame.getWidth())));
         int height = Integer.parseInt(properties.getProperty(className + "_height", String.valueOf(frame.getHeight())));
-        frame.setBounds(x, y, width, height);
+        frame.setBounds(x, y, width > 0 ? width : 300, height > 0 ? height : 200);
 
         if (frame instanceof JInternalFrame jInternalFrame)
         {
