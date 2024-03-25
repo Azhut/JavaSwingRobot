@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 public class ConfigManager
 {
-    private String configFilePath;
+    private final String configFilePath;
 
     public ConfigManager()
     {
