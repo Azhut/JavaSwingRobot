@@ -18,15 +18,6 @@ public class RobotsProgram {
         SwingUtilities.invokeLater(() -> {
             MainApplicationFrame frame = new MainApplicationFrame();
             frame.setVisible(true);
-
-            javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
-                if (frame.isDisposed()) {
-                    System.out.println("Приложение завершило работу.");
-                    System.exit(0);
-                }
-            });
-            timer.setInitialDelay(0);
-            timer.start();
         });
     }
 }

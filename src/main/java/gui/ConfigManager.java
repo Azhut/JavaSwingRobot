@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 public class ConfigManager
 {
-    private final String configFilePath = new File("src/main/java/config.txt").getAbsolutePath();
+    private final String configFilePath = new File("src/main/resources/config.properties").getAbsolutePath();
 
     /**
      * Сохраняет конфигурацию приложения

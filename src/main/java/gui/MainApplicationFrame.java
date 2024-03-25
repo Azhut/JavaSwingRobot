@@ -12,7 +12,6 @@ import log.Logger;
 
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private boolean disposed = false;
     private final ConfigManager configManager = new ConfigManager();
 
     public MainApplicationFrame() {
@@ -44,7 +43,13 @@ public class MainApplicationFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                handleWindowClosing();
+                int res = handleWindowClosing();
+
+                if (res == JOptionPane.YES_OPTION)
+                {
+                    e.getWindow().setVisible(false);
+                    System.exit(0);
+                }
             }
         });
     }
@@ -111,7 +116,7 @@ public class MainApplicationFrame extends JFrame {
         }
     }
 
-    private void handleWindowClosing() {
+    private int handleWindowClosing() {
 
         int option = JOptionPane.showOptionDialog(
                 this,
@@ -126,12 +131,10 @@ public class MainApplicationFrame extends JFrame {
                 );
 
         if (option == JOptionPane.YES_OPTION) {
-            disposed = true;
             dispose();
         }
-    }
-    public boolean isDisposed() {
-        return disposed;
+
+        return option;
     }
 
 }
