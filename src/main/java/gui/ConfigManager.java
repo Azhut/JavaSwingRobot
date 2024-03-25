@@ -13,8 +13,26 @@ import java.util.Properties;
  */
 public class ConfigManager
 {
-    private final String configFilePath = new File("src/main/resources/config.properties").getAbsolutePath();
+    private String configFilePath;
 
+    public ConfigManager()
+    {
+        String userHome = System.getProperty("user.home");
+        File directory = new File(userHome, "JavaSwingRobot");
+        if (!directory.exists()) {
+            boolean created = directory.mkdir();
+            if (created)
+            {
+                Logger.debug("Рабочая директория успешно создана!");
+            }
+            else
+            {
+                Logger.debug("Не удалось создать директорию");
+            }
+        }
+
+         this.configFilePath = new File(directory,"config.properties").getAbsolutePath();
+    }
     /**
      * Сохраняет конфигурацию приложения
      * @param desktopPane - внутренние фреймы
@@ -92,7 +110,7 @@ public class ConfigManager
         }
         catch (IOException e)
         {
-            Logger.error("Неизвестная ошибка");
+            Logger.error("Неизвестная ошибка: " + e.getMessage());
             e.printStackTrace();
         }
     }

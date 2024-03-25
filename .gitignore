@@ -3,5 +3,4 @@
 /src/robots/bin
 eclipse.bat
 /.idea
-/src/main/resources/config.properties
 target/
