@@ -5,6 +5,9 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.swing.*;
 
@@ -31,11 +34,22 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        GameWindow gameWindow = new GameWindow();
-        addWindow(gameWindow);
+        try {
+            File jarFile = new File("robots/robot.jar");
+            URL jarUrl = jarFile.toURI().toURL();
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl});
+            Class<?> robotModelClass = classLoader.loadClass("gui.RobotModel");
+            IRobotModel robotModel = (IRobotModel) robotModelClass.newInstance();
+            GameWindow gameWindow = new GameWindow(robotModel);
+            addWindow(gameWindow);
+            RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow((RobotModel) robotModel);
+            addWindow(robotCoordinatesWindow);
 
-        RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
-        addWindow(robotCoordinatesWindow);
+        } catch (Exception e) {
+            Logger.error("Ошибка при загрузке робота из jar-файла: " + e.getMessage());
+        }
+
+
 
         configManager.loadConfig(desktopPane, this);
 
@@ -48,6 +62,7 @@ public class MainApplicationFrame extends JFrame {
             }
         });
     }
+
 
     protected LogWindow createLogWindow() {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
@@ -106,7 +121,8 @@ public class MainApplicationFrame extends JFrame {
         try {
             UIManager.setLookAndFeel(className);
             SwingUtilities.updateComponentTreeUI(this);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
             // just ignore
         }
     }
@@ -123,13 +139,14 @@ public class MainApplicationFrame extends JFrame {
                 null,
                 JOptionPane.YES_OPTION
 //                new String[]{"Да", "Нет"},
-                );
+        );
 
         if (option == JOptionPane.YES_OPTION) {
             disposed = true;
             dispose();
         }
     }
+
     public boolean isDisposed() {
         return disposed;
     }

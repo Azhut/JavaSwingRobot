@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -15,7 +16,7 @@ import javax.swing.*;
 
 public class GameVisualizer extends JPanel {
     private final Timer m_timer = initTimer();
-    private final RobotModel robotModel;
+    private final IRobotModel robotModel;
 
     private static Timer initTimer() {
         Timer timer = new Timer("events generator", true);
@@ -28,7 +29,7 @@ public class GameVisualizer extends JPanel {
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
 
-    public GameVisualizer(RobotModel robotModel) {
+    public GameVisualizer(IRobotModel robotModel) {
         this.robotModel = robotModel;
         m_timer.schedule(new TimerTask() {
             @Override
@@ -123,7 +124,8 @@ public class GameVisualizer extends JPanel {
         double currentDirection = robotModel.getDirection();
 
         double newX = currentX + velocity / angularVelocity *
-                (Math.sin(currentDirection + angularVelocity * duration) -
+                (Math.sin(currentDirection +
+                        angularVelocity * duration) -
                         Math.sin(currentDirection));
         if (!Double.isFinite(newX)) {
             newX = currentX + velocity * duration * Math.cos(currentDirection);

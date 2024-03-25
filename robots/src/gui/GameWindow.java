@@ -5,19 +5,18 @@ import java.awt.BorderLayout;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer m_visualizer;
+    private final IRobotModel robotModel;
 
-    public RobotModel getRobotModel() {
+    public IRobotModel getRobotModel() {
         return robotModel;
     }
 
-    private final RobotModel robotModel; // Создаем экземпляр модели робота
-
-    public GameWindow() {
+    public GameWindow(IRobotModel robotModel) {
         super("Игровое поле", true, true, true);
 
-        robotModel = new RobotModel();
+        this.robotModel = robotModel;
 
-        m_visualizer = new GameVisualizer(robotModel);
+        m_visualizer = new GameVisualizer((RobotModel) robotModel); // Приведение типа к RobotModel
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
@@ -26,5 +25,4 @@ public class GameWindow extends JInternalFrame {
 
         pack();
     }
-
 }
