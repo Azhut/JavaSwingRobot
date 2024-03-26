@@ -1,6 +1,5 @@
 package fileManagers;
 
-import fileManagers.FileManager;
 import log.Logger;
 
 import javax.swing.*;
@@ -154,11 +153,6 @@ public class ConfigManager extends FileManager
                 desktopPane.setComponentZOrder(jInternalFrame, zorder);
             }
         }
-    }
-
-    @Override
-    protected File chooseWorkingDirectory() {
-        return null;
     }
 }
 

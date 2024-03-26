@@ -2,7 +2,6 @@ package log.controller;
 
 import log.LogEntry;
 import log.LogLevel;
-import log.controller.LogChangeListener;
 import log.model.LogStorage;
 
 import java.util.LinkedList;
@@ -11,6 +10,8 @@ import java.util.LinkedList;
  * Что починить:
  * 1. Этот класс порождает утечку ресурсов (связанные слушатели оказываются
  * удерживаемыми в памяти)
+ * <br>
+ * Класс, отвечающий за хранение логов и слушателей логгера с обеспечением потокобезопасности
  */
 public class LogWindowSource
 {
@@ -22,8 +23,6 @@ public class LogWindowSource
         m_messages = new LogStorage(iQueueLength);
         m_listeners = new LinkedList<>();
     }
-
-
 
     /**
      * Регистрация слушателя лога
@@ -78,6 +77,13 @@ public class LogWindowSource
         }
     }
 
+
+    /**
+     * Возвращает записи лога из диапозона
+     * @param startFrom - начальный индекс
+     * @param count - сколько надо
+     * @return записи лога
+     */
     public Iterable<LogEntry> range(int startFrom, int count)
     {
         synchronized (m_messages)
@@ -86,6 +92,11 @@ public class LogWindowSource
         }
     }
 
+
+    /**
+     * Возвращает все записи лога
+     * @return m_messages.all()
+     */
     public Iterable<LogEntry> all()
     {
         synchronized (m_messages)
@@ -103,12 +114,16 @@ public class LogWindowSource
     {
         synchronized (m_messages)
         {
-            boolean res = m_messages.changeSize(new_size);
+            boolean res = m_messages.changeCapacity(new_size);
             notifyListeners();
             return res;
         }
     }
 
+
+    /**
+     * Уведомляет слушателей об изменениях в хранилище логов
+     */
     private void notifyListeners()
     {
         LogChangeListener[] activeListeners = m_activeListeners;

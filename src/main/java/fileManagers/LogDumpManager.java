@@ -8,6 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+
+/**
+ * Работает с дампом логов
+ */
 public class LogDumpManager extends FileManager
 {
     private final String logDumpFilePath;
@@ -17,6 +21,11 @@ public class LogDumpManager extends FileManager
         this.logDumpFilePath = new File(directory,"logDump.txt").getAbsolutePath();
     }
 
+
+    /**
+     * Работа с дампом
+     * @param toDump - итерабельная структура с записями для дампа
+     */
     public void makeDump(Iterable<LogEntry> toDump)
     {
         try (OutputStream output = new FileOutputStream(logDumpFilePath))

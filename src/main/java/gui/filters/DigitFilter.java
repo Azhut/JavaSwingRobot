@@ -4,6 +4,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
+
+/**
+ * Фильтр для ввода только цифр
+ */
 public class DigitFilter extends DocumentFilter {
     private static final String DIGITS = "\\d+";
 
