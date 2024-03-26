@@ -61,7 +61,7 @@ public class RobotModel extends Observable implements IRobotModel {
         int robotCenterY = round(y);
         AffineTransform t = AffineTransform.getRotateInstance(direction, robotCenterX, robotCenterY);
         g.setTransform(t);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.YELLOW);
         fillOval(g, robotCenterX, robotCenterY, 30, 10);
         g.setColor(Color.BLACK);
         drawOval(g, robotCenterX, robotCenterY, 30, 10);

@@ -44,7 +44,7 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        String jarFilePath = "robots/src/Robot.jar";
+        String jarFilePath = "RobotModel.jar";
         String robotClassName = "gui.RobotModel";
         GameWindow gameWindow = new GameWindow(jarFilePath, robotClassName);
         addWindow(gameWindow);

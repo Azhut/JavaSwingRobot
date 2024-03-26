@@ -9,24 +9,20 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-/**
- * Вся логика отображения и событиый игры
- */
 public class GameVisualizer extends JPanel {
     private final IRobotModel robotModel;
-
-    private volatile int targetPositionX = 150;
-    private volatile int targetPositionY = 100;
+    private final Target target;
 
     private static final double MAX_VELOCITY = 0.1;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
 
     public GameVisualizer(IRobotModel robotModel) {
         this.robotModel = robotModel;
+        this.target = new Target(150, 100); // Начальные координаты цели
+
         Timer timer = new Timer("events generator", true);
         timer.schedule(new TimerTask() {
             @Override
@@ -52,8 +48,7 @@ public class GameVisualizer extends JPanel {
     }
 
     protected void setTargetPosition(Point p) {
-        targetPositionX = p.x;
-        targetPositionY = p.y;
+        target.setPosition(p.x, p.y);
     }
 
     protected void onRedrawEvent() {
@@ -61,12 +56,12 @@ public class GameVisualizer extends JPanel {
     }
 
     protected void onModelUpdateEvent() {
-        double distance = distance(targetPositionX, targetPositionY, robotModel.getPositionX(), robotModel.getPositionY());
+        double distance = distance(target.getX(), target.getY(), robotModel.getPositionX(), robotModel.getPositionY());
         if (distance < 0.5) {
             return;
         }
         double velocity = MAX_VELOCITY;
-        double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(), targetPositionX, targetPositionY);
+        double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(), target.getX(), target.getY());
         double angularVelocity = 0;
 
         if (robotModel.getDirection() - angleToTarget > Math.PI) {
@@ -151,7 +146,7 @@ public class GameVisualizer extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         paintRobot(g2d, robotModel.getPositionX(), robotModel.getPositionY(), robotModel.getDirection());
-        drawTarget(g2d, targetPositionX, targetPositionY);
+        drawTarget(g2d, target.getX(), target.getY());
     }
 
     private void drawTarget(Graphics2D g, int x, int y) {
