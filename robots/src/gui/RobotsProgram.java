@@ -5,6 +5,9 @@ import java.util.Locale;
 import javax.swing.*;
 
 
+/**
+ * Start point
+ */
 public class RobotsProgram {
     public static void main(String[] args) {
         Locale.setDefault(new Locale("ru", "RU"));

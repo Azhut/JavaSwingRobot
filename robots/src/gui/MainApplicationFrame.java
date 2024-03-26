@@ -10,6 +10,9 @@ import javax.swing.*;
 
 import log.Logger;
 
+/**
+ * Главное окно
+ */
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private boolean disposed = false;
@@ -31,17 +34,14 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        // Указываем путь к jar-файлу и имя класса робота для загрузки
-        String jarFilePath = "C:\\Users\\Egor\\Desktop\\Coding\\Java\\Robots\\robots\\src\\Robot.jar"; // Укажите ваш путь к jar-файлу
-        String robotClassName = "gui.RobotModel"; // Укажите полное имя класса робота
-
-        // Создаем экземпляр GameWindow с передачей пути к jar-файлу и имени класса робота
+        String jarFilePath = "robots/src/Robot.jar";
+        String robotClassName = "gui.RobotModel";
         GameWindow gameWindow = new GameWindow(jarFilePath, robotClassName);
         addWindow(gameWindow);
 
-        // Изменил создание RobotCoordinatesWindow, теперь передаем экземпляр робота из GameWindow
-//        RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
-//        addWindow(robotCoordinatesWindow);
+
+        RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
+        addWindow(robotCoordinatesWindow);
 
         configManager.loadConfig(desktopPane, this);
 
@@ -128,7 +128,7 @@ public class MainApplicationFrame extends JFrame {
                 null,
                 null,
                 JOptionPane.YES_OPTION
-//                new String[]{"Да", "Нет"},
+//                new String[]{"Да", "Нет"}
         );
 
         if (option == JOptionPane.YES_OPTION) {

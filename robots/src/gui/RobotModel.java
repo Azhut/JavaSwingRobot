@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.util.Observable;
 
+/**
+ * Модель робота
+ */
 public class RobotModel extends Observable implements IRobotModel {
     private double positionX;
     private double positionY;
@@ -46,6 +49,13 @@ public class RobotModel extends Observable implements IRobotModel {
     }
 
 
+    /**
+     * Метод, который должен отличаться у каждой загружаемого класса робота
+     * @param g объект для работы с графикой
+     * @param x координата
+     * @param y координата
+     * @param direction направление
+     */
     public void drawRobot(Graphics2D g, double x, double y, double direction) {
         int robotCenterX = round(x);
         int robotCenterY = round(y);
