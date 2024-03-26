@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.*;
 
@@ -18,7 +20,14 @@ public class MainApplicationFrame extends JFrame {
     private boolean disposed = false;
     private final ConfigManager configManager = new ConfigManager();
 
+    private final ResourceBundle messagesBundle;
     public MainApplicationFrame() {
+
+
+
+        messagesBundle = ResourceBundle.getBundle("messages", Locale.getDefault());
+
+
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset, screenSize.width - inset * 2, screenSize.height - inset * 2);
@@ -118,17 +127,15 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private void handleWindowClosing() {
-
         int option = JOptionPane.showOptionDialog(
                 this,
-                "Вы уверены, что хотите выйти?",
-                "Подтверждение выхода",
+                messagesBundle.getString("Exit"), // Используем локализованное сообщение для "Выход"
+                messagesBundle.getString("ConfirmationExit"), // Используем локализованное сообщение для "Подтверждение выхода"
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 null,
                 JOptionPane.YES_OPTION
-//                new String[]{"Да", "Нет"}
         );
 
         if (option == JOptionPane.YES_OPTION) {

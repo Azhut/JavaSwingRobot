@@ -1,7 +1,5 @@
 package gui;
 
-import gui.IRobotModel;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,8 +13,10 @@ import java.util.TimerTask;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * Вся логика отображения и событиый игры
+ */
 public class GameVisualizer extends JPanel {
-    private final Timer timer = new Timer("events generator", true);
     private final IRobotModel robotModel;
 
     private volatile int targetPositionX = 150;
@@ -27,6 +27,7 @@ public class GameVisualizer extends JPanel {
 
     public GameVisualizer(IRobotModel robotModel) {
         this.robotModel = robotModel;
+        Timer timer = new Timer("events generator", true);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
