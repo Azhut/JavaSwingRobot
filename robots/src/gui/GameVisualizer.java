@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -9,10 +8,16 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 public class GameVisualizer extends JPanel {
     private final Timer m_timer = initTimer();
@@ -43,7 +48,6 @@ public class GameVisualizer extends JPanel {
                 onModelUpdateEvent();
             }
         }, 0, 10);
-
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -90,10 +94,8 @@ public class GameVisualizer extends JPanel {
 
         angularVelocity = Math.signum(deltaAngle) * maxAngularVelocity;
 
-
         moveRobot(velocity, angularVelocity, 10);
     }
-
 
     private static double distance(double x1, double y1, double x2, double y2) {
         double diffX = x1 - x2;
@@ -104,7 +106,6 @@ public class GameVisualizer extends JPanel {
     private static double angleTo(double fromX, double fromY, double toX, double toY) {
         double diffX = toX - fromX;
         double diffY = toY - fromY;
-
         return asNormalizedRadians(Math.atan2(diffY, diffX));
     }
 
@@ -142,7 +143,6 @@ public class GameVisualizer extends JPanel {
         robotModel.setDirection(newDirection);
     }
 
-
     private static double asNormalizedRadians(double angle) {
         while (angle < 0) {
             angle += 2 * Math.PI;
@@ -158,34 +158,11 @@ public class GameVisualizer extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        drawRobot(g2d, round(robotModel.getPositionX()), round(robotModel.getPositionY()), robotModel.getDirection());
+        paintRobot(g2d, robotModel.getPositionX(), robotModel.getPositionY(), robotModel.getDirection());
         drawTarget(g2d, m_targetPositionX, m_targetPositionY);
-    }
-
-    private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.fillOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
-    }
-
-    private static void drawOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
-    }
-
-    private void drawRobot(Graphics2D g, int x, int y, double direction) {
-        int robotCenterX = round(robotModel.getPositionX());
-        int robotCenterY = round(robotModel.getPositionY());
-        AffineTransform t = AffineTransform.getRotateInstance(direction, robotCenterX, robotCenterY);
-        g.setTransform(t);
-        g.setColor(Color.MAGENTA);
-        fillOval(g, robotCenterX, robotCenterY, 30, 10);
-        g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX, robotCenterY, 30, 10);
-        g.setColor(Color.WHITE);
-        fillOval(g, robotCenterX + 10, robotCenterY, 5, 5);
-        g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX + 10, robotCenterY, 5, 5);
     }
 
     private void drawTarget(Graphics2D g, int x, int y) {
@@ -196,4 +173,35 @@ public class GameVisualizer extends JPanel {
         g.setColor(Color.BLACK);
         drawOval(g, x, y, 5, 5);
     }
+
+    private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
+        g.fillOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
+    }
+
+    private static void drawOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
+        g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
+    }
+
+
+    private void paintRobot(Graphics2D g, double x, double y, double direction) {
+        try {
+
+            // Вызываем метод drawRobot у переданного экземпляра robotModel
+            Method drawRobotMethod = robotModel.getClass().getMethod("drawRobot", Graphics2D.class, Double.TYPE, Double.TYPE, Double.TYPE);
+
+            // Вызываем метод drawRobot, передавая ему Graphics2D и координаты робота
+            drawRobotMethod.invoke(robotModel, g, x, y, direction);
+        } catch (Exception e) {
+            // Обработка ошибок
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
 }

@@ -5,18 +5,13 @@ import java.awt.BorderLayout;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer m_visualizer;
-    private final IRobotModel robotModel;
 
-    public IRobotModel getRobotModel() {
-        return robotModel;
-    }
 
-    public GameWindow(IRobotModel robotModel) {
+    public GameWindow(String jarFilePath, String className) {
         super("Игровое поле", true, true, true);
 
-        this.robotModel = robotModel;
 
-        m_visualizer = new GameVisualizer((RobotModel) robotModel); // Приведение типа к RobotModel
+        m_visualizer = new GameVisualizer(loadRobotModel(jarFilePath, className));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
@@ -24,5 +19,19 @@ public class GameWindow extends JInternalFrame {
         getContentPane().add(panel);
 
         pack();
+    }
+
+    private IRobotModel loadRobotModel(String jarFilePath, String className) {
+        try {
+            Class<?> robotModelClass = JarClassLoader.loadClassFromJar(jarFilePath, className);
+
+
+
+            // Создаем экземпляр класса RobotModel и приводим его к интерфейсу IRobotModel
+            return (IRobotModel) robotModelClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load RobotModel from jar file", e);
+        }
     }
 }
