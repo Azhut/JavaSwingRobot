@@ -7,11 +7,12 @@ import java.awt.BorderLayout;
  * Окно игры
  */
 public class GameWindow extends JInternalFrame {
+    private final IRobotModel robotModel;
 
     public GameWindow(String jarFilePath, String className) {
         super("Игровое поле", true, true, true);
 
-        IRobotModel robotModel = loadRobotModel(jarFilePath, className);
+        robotModel = loadRobotModel(jarFilePath, className);
 
         GameVisualizer m_visualizer = new GameVisualizer(robotModel);
 
@@ -37,5 +38,9 @@ public class GameWindow extends JInternalFrame {
             e.printStackTrace();
             throw new RuntimeException("Failed to load RobotModel from jar file", e);
         }
+    }
+
+    public IRobotModel getRobotModel() {
+        return robotModel;
     }
 }
