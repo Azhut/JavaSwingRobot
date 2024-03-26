@@ -1,6 +1,4 @@
 /.metadata
-/src/robots/.settings
-/src/robots/bin
 eclipse.bat
-/.idea
+.idea/
 target/
