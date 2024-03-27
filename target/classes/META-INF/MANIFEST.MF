@@ -1,1 +1,1 @@
-Main-Class: gui.RobotsProgram
+Main-Class: RobotsProgram
