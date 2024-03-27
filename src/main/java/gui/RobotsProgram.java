@@ -1,5 +1,7 @@
 package gui;
 
+import gui.windows.MainApplicationFrame;
+
 import java.util.Locale;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package gui;
+package gui.controller;
 
 import java.io.File;
 import java.net.URL;

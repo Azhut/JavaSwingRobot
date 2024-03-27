@@ -1,4 +1,8 @@
-package gui;
+package gui.windows;
+
+import gui.controller.JarClassLoader;
+import gui.model.IRobotModel;
+import gui.view.GameVisualizer;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
