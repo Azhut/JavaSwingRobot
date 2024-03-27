@@ -1,8 +1,9 @@
-package gui.controller;
 
-import gui.model.TargetModel;
-import gui.view.GameVisualizer;
-import gui.model.IRobotModel;
+package game.controller;
+
+import game.model.IRobotModel;
+import game.model.TargetModel;
+import game.view.GameVisualizer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

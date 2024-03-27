@@ -1,6 +1,5 @@
-package gui.model;
 
-import gui.model.IRobotModel;
+package game.model;
 
 import java.awt.Graphics2D;
 import java.awt.Color;

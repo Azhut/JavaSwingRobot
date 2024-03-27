@@ -28,6 +28,7 @@
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.targetModel>20</maven.compiler.targetModel>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>20</maven.compiler.target>
     </properties>
     
 </project>

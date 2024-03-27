@@ -1,4 +1,3 @@
-package gui.windows;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -7,10 +6,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.*;
 
 import fileManagers.ConfigManager;
+import game.view.GameWindow;
+import game.view.RobotCoordinatesWindow;
 import log.view.LogWindow;
 import log.Logger;
 
@@ -23,7 +23,6 @@ public class MainApplicationFrame extends JFrame {
     private final ConfigManager configManager = new ConfigManager();
 
     public MainApplicationFrame() {
-
 
 
         ResourceBundle messagesBundle = ResourceBundle.getBundle("messages", Locale.getDefault());
@@ -45,7 +44,7 @@ public class MainApplicationFrame extends JFrame {
         addWindow(logWindow);
 
         String jarFilePath = "RobotModel.jar";
-        String robotClassName = "gui.model.RobotModel";
+        String robotClassName = "game.model.RobotModel";
         GameWindow gameWindow = new GameWindow(jarFilePath, robotClassName);
         addWindow(gameWindow);
 
@@ -61,8 +60,7 @@ public class MainApplicationFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 int res = handleWindowClosing();
 
-                if (res == JOptionPane.YES_OPTION)
-                {
+                if (res == JOptionPane.YES_OPTION) {
                     e.getWindow().setVisible(false);
                     System.exit(0);
                 }
@@ -127,7 +125,8 @@ public class MainApplicationFrame extends JFrame {
         try {
             UIManager.setLookAndFeel(className);
             SwingUtilities.updateComponentTreeUI(this);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
             // just ignore
         }
     }

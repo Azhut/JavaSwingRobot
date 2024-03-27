@@ -1,4 +1,5 @@
-package gui.model;
+
+package game.model;
 
 import java.awt.*;
 

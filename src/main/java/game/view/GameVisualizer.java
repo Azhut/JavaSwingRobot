@@ -1,7 +1,8 @@
-package gui.view;
 
-import gui.model.TargetModel;
-import gui.model.IRobotModel;
+package game.view;
+
+import game.model.TargetModel;
+import game.model.IRobotModel;
 
 import java.awt.Color;
 import java.awt.Graphics;

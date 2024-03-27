@@ -1,6 +1,7 @@
-package gui.windows;
 
-import gui.model.IRobotModel;
+package game.view;
+
+import game.model.IRobotModel;
 
 import javax.swing.*;
 import java.util.Observable;

@@ -1,4 +1,4 @@
-package gui.filters;
+package log.filters;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
