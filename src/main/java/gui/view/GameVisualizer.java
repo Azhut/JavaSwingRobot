@@ -1,4 +1,7 @@
-package gui;
+package gui.view;
+
+import gui.model.TargetModel;
+import gui.model.IRobotModel;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,14 +17,14 @@ import javax.swing.SwingUtilities;
 
 public class GameVisualizer extends JPanel {
     private final IRobotModel robotModel;
-    private final Target target;
+    private final TargetModel targetModel;
 
     private static final double MAX_VELOCITY = 0.1;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
 
     public GameVisualizer(IRobotModel robotModel) {
         this.robotModel = robotModel;
-        this.target = new Target(150, 100); // Начальные координаты цели
+        this.targetModel = new TargetModel(150, 100); // Начальные координаты цели
 
         Timer timer = new Timer("events generator", true);
         timer.schedule(new TimerTask() {
@@ -48,7 +51,7 @@ public class GameVisualizer extends JPanel {
     }
 
     protected void setTargetPosition(Point p) {
-        target.setPosition(p.x, p.y);
+        targetModel.setPosition(p.x, p.y);
     }
 
     protected void onRedrawEvent() {
@@ -56,12 +59,12 @@ public class GameVisualizer extends JPanel {
     }
 
     protected void onModelUpdateEvent() {
-        double distance = distance(target.getX(), target.getY(), robotModel.getPositionX(), robotModel.getPositionY());
+        double distance = distance(targetModel.getX(), targetModel.getY(), robotModel.getPositionX(), robotModel.getPositionY());
         if (distance < 0.5) {
             return;
         }
         double velocity = MAX_VELOCITY;
-        double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(), target.getX(), target.getY());
+        double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(), targetModel.getX(), targetModel.getY());
         double angularVelocity = 0;
 
         if (robotModel.getDirection() - angleToTarget > Math.PI) {
@@ -146,7 +149,7 @@ public class GameVisualizer extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         paintRobot(g2d, robotModel.getPositionX(), robotModel.getPositionY(), robotModel.getDirection());
-        drawTarget(g2d, target.getX(), target.getY());
+        drawTarget(g2d, targetModel.getX(), targetModel.getY());
     }
 
     private void drawTarget(Graphics2D g, int x, int y) {

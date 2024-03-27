@@ -1,4 +1,4 @@
-package gui;
+package gui.windows;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -45,7 +45,7 @@ public class MainApplicationFrame extends JFrame {
         addWindow(logWindow);
 
         String jarFilePath = "RobotModel.jar";
-        String robotClassName = "gui.RobotModel";
+        String robotClassName = "gui.model.RobotModel";
         GameWindow gameWindow = new GameWindow(jarFilePath, robotClassName);
         addWindow(gameWindow);
 

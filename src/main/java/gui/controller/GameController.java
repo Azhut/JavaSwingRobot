@@ -1,4 +1,8 @@
-package gui;
+package gui.controller;
+
+import gui.model.TargetModel;
+import gui.view.GameVisualizer;
+import gui.model.IRobotModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -6,12 +10,12 @@ import java.awt.event.MouseEvent;
 public class GameController {
     private final GameVisualizer visualizer;
     private final IRobotModel model;
-    private final Target target;
+    private final TargetModel targetModel;
 
-    public GameController(GameVisualizer visualizer, IRobotModel model, Target target) {
+    public GameController(GameVisualizer visualizer, IRobotModel model, TargetModel targetModel) {
         this.visualizer = visualizer;
         this.model = model;
-        this.target = target;
+        this.targetModel = targetModel;
 
         visualizer.addMouseListener(new MouseAdapter() {
             @Override
@@ -22,7 +26,7 @@ public class GameController {
     }
 
     private void handleMouseClick(MouseEvent e) {
-        target.setPosition(e.getX(), e.getY());
+        targetModel.setPosition(e.getX(), e.getY());
         visualizer.repaint();
     }
 }
