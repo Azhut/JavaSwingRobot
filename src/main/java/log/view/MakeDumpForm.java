@@ -2,7 +2,7 @@ package log.view;
 
 import fileManagers.LogDumpManager;
 import gui.filters.DigitFilter;
-import log.controller.LogWindowSource;
+import log.LogWindowSource;
 
 import javax.swing.*;
 import javax.swing.text.PlainDocument;

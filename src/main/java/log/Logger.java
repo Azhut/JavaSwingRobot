@@ -1,7 +1,5 @@
 package log;
 
-import log.controller.LogWindowSource;
-
 public final class Logger
 {
     private static final LogWindowSource defaultLogSource;

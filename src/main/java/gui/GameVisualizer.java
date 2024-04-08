@@ -24,7 +24,6 @@ public class GameVisualizer extends JPanel {
 
     private volatile int m_targetPositionX = 150;
     private volatile int m_targetPositionY = 100;
-
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
 
