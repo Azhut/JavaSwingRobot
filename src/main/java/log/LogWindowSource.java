@@ -11,12 +11,12 @@ import java.util.LinkedList;
  */
 public class LogWindowSource
 {
-    private final LogStorage m_messages;
+    private final LogStorage2 m_messages;
     private final LinkedList<LogChangeListener> m_listeners;
     private volatile LogChangeListener[] m_activeListeners;
     public LogWindowSource(int iQueueLength)
     {
-        m_messages = new LogStorage(iQueueLength);
+        m_messages = new LogStorage2(iQueueLength);
         m_listeners = new LinkedList<>();
     }
 
@@ -53,24 +53,9 @@ public class LogWindowSource
      */
     public void append(LogLevel logLevel, String strMessage) {
 
-        synchronized (m_messages)
-        {
-            m_messages.add(new LogEntry(logLevel, strMessage));
-        }
+        m_messages.add(new LogEntry(logLevel, strMessage));
 
         notifyListeners();
-    }
-
-    /**
-     * Получение размера коллекции сообщений
-     * @return m_messages.size() - размер коллекции
-     */
-    public int size()
-    {
-        synchronized (m_messages)
-        {
-            return m_messages.size();
-        }
     }
 
 
@@ -82,10 +67,7 @@ public class LogWindowSource
      */
     public Iterable<LogEntry> range(int startFrom, int count)
     {
-        synchronized (m_messages)
-        {
-            return m_messages.range(startFrom, count);
-        }
+        return m_messages.range(startFrom, count);
     }
 
 
@@ -95,25 +77,18 @@ public class LogWindowSource
      */
     public Iterable<LogEntry> all()
     {
-        synchronized (m_messages)
-        {
-            return m_messages.all();
-        }
+        return m_messages.all();
     }
 
     /**
      * Изменение рвзмера хранилища
+     *
      * @param new_size - новый размер
-     * @return результат изменения (успешно или нет)
      */
-    public boolean changeSize(int new_size)
+    public void changeSize(int new_size)
     {
-        synchronized (m_messages)
-        {
-            boolean res = m_messages.changeCapacity(new_size);
-            notifyListeners();
-            return res;
-        }
+        m_messages.changeCapacity(new_size);
+        notifyListeners();
     }
 
 
