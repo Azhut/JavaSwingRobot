@@ -29,7 +29,10 @@ public class LogStorage {
      */
     public void add(LogEntry logEntry)
     {
-        m_source.add(logEntry);
+        synchronized (m_source)
+        {
+            m_source.add(logEntry);
+        }
         deleteExtra();
     }
 
@@ -72,12 +75,15 @@ public class LogStorage {
      */
     public Iterable<LogEntry> range(int startFrom, int count)
     {
-        if (startFrom < 0 || startFrom >= m_source.size())
+        synchronized (m_source)
         {
-            return Collections.emptyList();
+            if (startFrom < 0 || startFrom >= m_source.size())
+            {
+                return Collections.emptyList();
+            }
+            int indexTo = Math.min(startFrom + count, m_source.size());
+            return m_source.subList(startFrom, indexTo);
         }
-        int indexTo = Math.min(startFrom + count, m_source.size());
-        return m_source.subList(startFrom, indexTo);
     }
 
     /**
@@ -86,7 +92,11 @@ public class LogStorage {
      */
     public Iterable<LogEntry> all()
     {
-        return m_source;
+         synchronized (m_source)
+         {
+             return m_source;
+
+         }
     }
 
 
@@ -95,9 +105,12 @@ public class LogStorage {
      */
     private void deleteExtra()
     {
-        while (m_source.size() > m_capacity)
+        synchronized (m_source)
         {
-            m_source.pollFirst();
+            while (m_source.size() > m_capacity)
+            {
+                m_source.pollFirst();
+            }
         }
     }
 
