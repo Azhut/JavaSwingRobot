@@ -1,8 +1,4 @@
-package log.controller;
-
-import log.LogEntry;
-import log.LogLevel;
-import log.model.LogStorage;
+package log;
 
 import java.util.LinkedList;
 

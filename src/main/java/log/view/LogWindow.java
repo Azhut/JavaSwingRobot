@@ -2,9 +2,9 @@ package log.view;
 
 import java.awt.*;
 import javax.swing.*;
-import log.controller.LogChangeListener;
+import log.LogChangeListener;
 import log.LogEntry;
-import log.controller.LogWindowSource;
+import log.LogWindowSource;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {
