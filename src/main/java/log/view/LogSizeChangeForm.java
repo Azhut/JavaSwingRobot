@@ -1,8 +1,8 @@
 package log.view;
 
 
+import log.LogWindowSource;
 import log.filters.DigitFilter;
-import log.controller.LogWindowSource;
 
 import javax.swing.*;
 import javax.swing.text.PlainDocument;
