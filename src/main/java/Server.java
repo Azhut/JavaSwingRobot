@@ -22,7 +22,7 @@ public class Server
 
                 outToClient = new BufferedOutputStream(clientSocket.getOutputStream());
 
-                File file = new File("src/main/java/game/model/MyRobotModel.jar");
+                File file = new File("src/main/java/game/model/IRobotModel.class");
                 byte[] byteArray = new byte[(int) file.length()];
                 fileInputStream = new FileInputStream(file);
                 fileInputStream.read(byteArray, 0, byteArray.length);
