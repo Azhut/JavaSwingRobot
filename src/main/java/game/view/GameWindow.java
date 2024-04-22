@@ -1,22 +1,24 @@
 package game.view;
 
-import game.controller.JarClassLoader;
 import game.model.IRobotModel;
+import game.model.ModelLoader;
 import game.view.GameVisualizer;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 
-/**
- * Окно игры
- */
 public class GameWindow extends JInternalFrame {
     private final IRobotModel robotModel;
 
-    public GameWindow(String jarFilePath, String className) {
+    public GameWindow() {
         super("Игровое поле", true, true, true);
 
-        robotModel = loadRobotModel(jarFilePath, className);
+        String jarFilePath = "src/main/java/game/model/MyRobotModel.jar";
+        String robotClassName = "game.model.RobotModel";
+
+
+
+        robotModel = loadRobotModel(jarFilePath, robotClassName);
 
         GameVisualizer m_visualizer = new GameVisualizer(robotModel);
 
@@ -29,18 +31,19 @@ public class GameWindow extends JInternalFrame {
     }
 
     /**
-     * @param jarFilePath путь до класс
-     * @param className полное имя класса
-     * @return Интерфейс модели робота
+     * Загружает экземпляр класса робота из JAR-файла.
+     * @param jarFilePath путь к JAR-файлу
+     * @param className полное имя класса робота
+     * @return экземпляр класса робота
      */
     private IRobotModel loadRobotModel(String jarFilePath, String className) {
+        ModelLoader modelLoader = new ModelLoader();
         try {
-            Class<?> robotModelClass = JarClassLoader.loadClassFromJar(jarFilePath, className);
-
+            Class<?> robotModelClass = modelLoader.loadModelClass(jarFilePath, className);
             return (IRobotModel) robotModelClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to load RobotModel from jar file", e);
+            throw new RuntimeException("Failed to load RobotModel", e);
         }
     }
 
