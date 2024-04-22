@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class LogStorage2 {
     private final ConcurrentSkipListMap<Date, LogEntry> storage;
     private Integer capacity;
-
     public LogStorage2(Integer capacity) {
         this.storage = new ConcurrentSkipListMap<>();
         this.capacity = capacity;
@@ -22,29 +21,36 @@ public class LogStorage2 {
 
     public Iterable<LogEntry> all()
     {
-        return storage.values();
+        synchronized (storage)
+        {
+            return storage.values();
+        }
     }
 
     public Iterable<LogEntry> range(Integer startFrom, Integer count)
     {
-        if (startFrom < 0 || startFrom >= storage.size())
+        synchronized (storage)
         {
-            return Collections.emptyList();
+            if (startFrom < 0 || startFrom >= storage.size())
+            {
+                return Collections.emptyList();
+            }
+
+            int indexTo = Math.min(startFrom + count, storage.size() - 1);
+
+            Date startKey = getKeyByIndex(startFrom);
+            if (startKey == null) {
+                return Collections.emptyList();
+            }
+
+            ConcurrentNavigableMap<Date, LogEntry> subMap = storage.subMap(
+                    startKey, true,
+                    getKeyByIndex(indexTo), false
+            );
+
+            return subMap.values();
         }
 
-        int indexTo = Math.min(startFrom + count, storage.size() - 1);
-
-        Date startKey = getKeyByIndex(startFrom);
-        if (startKey == null) {
-            return Collections.emptyList();
-        }
-
-        ConcurrentNavigableMap<Date, LogEntry> subMap = storage.subMap(
-                startKey, true,
-                getKeyByIndex(indexTo), false
-        );
-
-        return subMap.values();
     }
 
     public void changeCapacity(int newSize) {
