@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 public class LogStorageSpeedTest {
 
     public static void main(String[] args) {
-        final int THREAD_COUNT = 10;
-        final int LOG_ENTRIES = 1000;
-        final int CAPACITY = 10;
+        final int THREAD_COUNT = 100;
+        final int LOG_ENTRIES = 5000;
+        final int CAPACITY = 100;
 
         LogStorage logStorage = new LogStorage(CAPACITY);
         LogStorage2 logStorage2 = new LogStorage2(CAPACITY);
