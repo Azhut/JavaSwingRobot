@@ -4,32 +4,40 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LogStorage2 {
     private final ConcurrentSkipListMap<Date, LogEntry> storage;
     private Integer capacity;
+    private final Lock lock;
+
     public LogStorage2(Integer capacity) {
         this.storage = new ConcurrentSkipListMap<>();
         this.capacity = capacity;
+        this.lock = new ReentrantLock();
     }
 
-    public void add(LogEntry entry)
-    {
+    public void add(LogEntry entry) {
         storage.put(new Date(), entry);
         deleteExtra();
     }
 
-    public Iterable<LogEntry> all()
-    {
-        synchronized (storage)
+    public Iterable<LogEntry> all() {
+        lock.lock();
+        try
         {
             return storage.values();
         }
+        finally
+        {
+            lock.unlock();
+        }
     }
 
-    public Iterable<LogEntry> range(Integer startFrom, Integer count)
-    {
-        synchronized (storage)
+    public Iterable<LogEntry> range(Integer startFrom, Integer count) {
+        lock.lock();
+        try
         {
             if (startFrom < 0 || startFrom >= storage.size())
             {
@@ -50,10 +58,14 @@ public class LogStorage2 {
 
             return subMap.values();
         }
-
+        finally
+        {
+            lock.unlock();
+        }
     }
 
-    public void changeCapacity(int newSize) {
+    public void changeCapacity(int newSize)
+    {
         if (newSize > 0)
         {
             capacity = newSize;
@@ -69,10 +81,13 @@ public class LogStorage2 {
         }
     }
 
-    private Date getKeyByIndex(int index) {
+    private Date getKeyByIndex(int index)
+    {
         int i = 0;
-        for (Date key : storage.keySet()) {
-            if (i == index) {
+        for (Date key : storage.keySet())
+        {
+            if (i == index)
+            {
                 return key;
             }
             i++;
