@@ -1,0 +1,23 @@
+#Tue Mar 26 15:54:39 YEKT 2024
+game.GameWindow_height=0
+game.GameWindow_maximized=false
+game.GameWindow_width=0
+game.GameWindow_x=0
+game.GameWindow_y=0
+game.GameWindow_z-order=0
+game.LogWindow_height=200
+game.LogWindow_maximized=false
+game.LogWindow_width=300
+game.LogWindow_x=330
+game.LogWindow_y=0
+game.LogWindow_z-order=2
+game.MainApplicationFrame_height=927
+game.MainApplicationFrame_width=1455
+game.MainApplicationFrame_x=-7
+game.MainApplicationFrame_y=-7
+game.RobotCoordinatesWindow_height=200
+game.RobotCoordinatesWindow_maximized=false
+game.RobotCoordinatesWindow_width=538
+game.RobotCoordinatesWindow_x=674
+game.RobotCoordinatesWindow_y=1
+game.RobotCoordinatesWindow_z-order=1
