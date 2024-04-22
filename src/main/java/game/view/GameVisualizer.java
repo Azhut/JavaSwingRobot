@@ -5,6 +5,7 @@ import game.model.TargetModel;
 import game.model.IRobotModel;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
