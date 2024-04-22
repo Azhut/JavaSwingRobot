@@ -43,9 +43,7 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        String jarFilePath = "RobotModel.jar";
-        String robotClassName = "game.model.RobotModel";
-        GameWindow gameWindow = new GameWindow(jarFilePath, robotClassName);
+        GameWindow gameWindow = new GameWindow();
         addWindow(gameWindow);
 
         RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
