@@ -1,12 +1,13 @@
-package game.classLoader;
+package client_server;
 
+import game.classLoader.NetworkClassLoader;
 import log.Logger;
 
 import java.io.*;
 import java.net.Socket;
 
-public class NetworkClassLoader extends ClassLoader {
-    @Override
+public class NetworkClassLoaderTest extends ClassLoader {
+
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         Socket clientSocket = null;
         BufferedInputStream inFromServer = null;
@@ -54,4 +55,17 @@ public class NetworkClassLoader extends ClassLoader {
             }
         }
     }
+
+    public static void main(String[] args)
+    {
+        NetworkClassLoader loader = new NetworkClassLoader();
+        try {
+            Class incomingClass = loader.loadClass("MyRobotModel.jar");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
+
