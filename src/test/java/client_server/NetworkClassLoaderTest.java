@@ -23,13 +23,16 @@ public class NetworkClassLoaderTest extends ClassLoader {
 
             byte[] byteArray = new byte[8192];
             int bytesRead;
-            while ((bytesRead = inFromServer.read(byteArray)) != -1) {
+            while ((bytesRead = inFromServer.read(byteArray)) != -1)
+            {
                 buffer.write(byteArray, 0, bytesRead);
             }
 
             byte[] classData = buffer.toByteArray();
 
             Logger.info("JAR-файл получен");
+
+            System.out.println("Пришло: " + classData);
 
             return defineClass(className, classData, 0, classData.length);
         } catch (IOException e) {
@@ -58,9 +61,9 @@ public class NetworkClassLoaderTest extends ClassLoader {
 
     public static void main(String[] args)
     {
-        NetworkClassLoader loader = new NetworkClassLoader();
+        NetworkClassLoaderTest loader = new NetworkClassLoaderTest();
         try {
-            Class incomingClass = loader.loadClass("MyRobotModel.jar");
+            Class incomingClass = loader.loadClass("IRoborModel.class");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
