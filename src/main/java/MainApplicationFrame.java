@@ -49,7 +49,7 @@ public class MainApplicationFrame extends JFrame {
         RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
         addWindow(robotCoordinatesWindow);
 
-        configManager.loadConfig(desktopPane, this);
+//        configManager.loadConfig(desktopPane, this);
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

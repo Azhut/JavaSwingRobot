@@ -1,3 +1,5 @@
+package network.model;
+
 import java.net.*;
 import  java.io.*;
 
