@@ -1,15 +1,16 @@
 package game.view;
 
+import authentication.PlayerSerializer;
 import game.controller.GameController;
 import game.model.Game;
-import game.model.IRobotModel;
 import game.model.Player;
+import game.model.RobotModel;
 import game.model.TargetModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.geom.Ellipse2D;
+import java.io.IOException;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer gameVisualizer;
@@ -21,8 +22,12 @@ public class GameWindow extends JInternalFrame {
         setTitle("Моя игра");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
         // Создание объекта игры
         this.game = new Game();
+
+
+
 
         // Создание визуализатора игры
         this.gameVisualizer = new GameVisualizer(game);

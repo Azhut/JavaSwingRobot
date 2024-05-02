@@ -9,6 +9,7 @@ import game.model.TargetModel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,15 +45,14 @@ public class GameVisualizer extends JPanel {
         List<Player> players = game.getPlayers();
         for (Player player : players) {
             IRobotModel robot = player.getRobot();
-            Image robotSkin = player.getRobotSkin();
-            paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection(), robotSkin);
+            Shape robotShape = player.getRobotShape(); // Используем Shape вместо Image
+            paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection(), robotShape); // Передаем Shape вместо Image
             TargetModel target = player.getRobotTarget();
             if (target != null) {
                 drawTarget(g2d, target.getX(), target.getY());
             }
         }
     }
-
 
     private void drawTarget(Graphics2D g, int x, int y) {
         g.setColor(Color.GREEN);
@@ -69,12 +69,9 @@ public class GameVisualizer extends JPanel {
         g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
-    private void paintRobot(Graphics2D g, double x, double y, double direction, Image robotSkin) {
-        int imageWidth = robotSkin.getWidth(this);
-        int imageHeight = robotSkin.getHeight(this);
-        g.rotate(Math.toRadians(direction), x, y); // Поворот изображения в соответствии с направлением
-        g.drawImage(robotSkin, (int) (x - imageWidth / 2), (int) (y - imageHeight / 2), this);
-        g.rotate(-Math.toRadians(direction), x, y); // Возвращаем угол поворота к исходному состоянию
+    private void paintRobot(Graphics2D g, double x, double y, double direction, Shape robotShape) {
+        g.rotate(Math.toRadians(direction), x, y);
+        g.draw(robotShape); // Рисуем фигуру робота
+        g.rotate(-Math.toRadians(direction), x, y);
     }
-
 }

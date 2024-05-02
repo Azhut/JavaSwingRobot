@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -16,7 +17,7 @@ public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private final ConfigManager configManager = new ConfigManager();
 
-    public MainApplicationFrame() {
+    public MainApplicationFrame() throws IOException {
         initializeUI();
         createWindows();
         setJMenuBar(MenuBuilder.generateMenuBar(this::handleWindowClosing));
@@ -32,7 +33,7 @@ public class MainApplicationFrame extends JFrame {
         setContentPane(desktopPane);
     }
 
-    private void createWindows() {
+    private void createWindows(){
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
         addWindow(logWindow);
 

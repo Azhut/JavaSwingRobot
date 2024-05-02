@@ -15,8 +15,8 @@ public class RobotModel extends Observable implements IRobotModel {
     private double direction;
 
     public RobotModel() {
-        this.positionX = 100;
-        this.positionY = 100;
+        this.positionX = 400;
+        this.positionY = 400;
     }
 
     @Override

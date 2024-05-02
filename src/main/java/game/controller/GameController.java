@@ -15,13 +15,15 @@ import java.util.TimerTask;
 public class GameController extends MouseAdapter {
     private final Game game;
 
-    private static final double MAX_VELOCITY = 0.1;
+    private static final double MAX_VELOCITY = 0.5;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
+    private static final double STOP_DISTANCE = 0.1;
+    private static final double SLOW_DOWN_DISTANCE = 0.5; // Расстояние, на котором начинаем замедляться
 
     public GameController(Game game) {
         this.game = game;
 
-        Timer timer = new Timer("events generator", true);
+        Timer timer = new Timer("Генератор событий", true);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -50,85 +52,52 @@ public class GameController extends MouseAdapter {
             if (target == null) {
                 continue;
             }
-            double distance = distance(target.getX(), target.getY(), robot.getPositionX(), robot.getPositionY());
-            if (distance < 0.5) {
-                continue;
-            }
-            double velocity = MAX_VELOCITY;
             double angleToTarget = angleTo(robot.getPositionX(), robot.getPositionY(), target.getX(), target.getY());
-            double angularVelocity = 0;
-
-            if (robot.getDirection() - angleToTarget > Math.PI) {
-                robot.setDirection(robot.getDirection() - 2 * Math.PI);
-            } else if (robot.getDirection() - angleToTarget < Math.PI) {
-                robot.setDirection(robot.getDirection() + 2 * Math.PI);
+            double deltaAngle = normalizeAngle(angleToTarget - robot.getDirection());
+            if (Math.abs(deltaAngle) > MAX_ANGULAR_VELOCITY) {
+                double sign = Math.signum(deltaAngle);
+                robot.setDirection(robot.getDirection() + sign * MAX_ANGULAR_VELOCITY);
+            } else {
+                robot.setDirection(angleToTarget);
             }
-
-            double deltaAngle = angleToTarget - robot.getDirection();
-            if (deltaAngle > Math.PI) {
-                deltaAngle -= 2 * Math.PI;
-            } else if (deltaAngle < -Math.PI) {
-                deltaAngle += 2 * Math.PI;
+            double distance = distance(target.getX(), target.getY(), robot.getPositionX(), robot.getPositionY());
+            if (distance > STOP_DISTANCE) {
+                double velocity = Math.min(MAX_VELOCITY, distance);
+                if (distance < SLOW_DOWN_DISTANCE) {
+                    velocity *= distance / SLOW_DOWN_DISTANCE; // Замедляемся, когда приближаемся к цели
+                }
+                moveRobot(robot, velocity, robot.getDirection(), 50);
+            } else {
+                // Если робот достиг цели, остановить его
+                robot.setDirection(angleToTarget); // Выравниваем направление
+                moveRobot(robot, 0, robot.getDirection(), 0); // Скорость = 0
             }
-
-            angularVelocity = Math.signum(deltaAngle) * MAX_ANGULAR_VELOCITY;
-
-            moveRobot(robot, velocity, angularVelocity, 10);
         }
     }
 
-    private static double distance(double x1, double y1, double x2, double y2) {
+    private double distance(double x1, double y1, double x2, double y2) {
         double diffX = x1 - x2;
         double diffY = y1 - y2;
         return Math.sqrt(diffX * diffX + diffY * diffY);
     }
 
-    private static double angleTo(double fromX, double fromY, double toX, double toY) {
-        double diffX = toX - fromX;
-        double diffY = toY - fromY;
-        return asNormalizedRadians(Math.atan2(diffY, diffX));
+    private double angleTo(double fromX, double fromY, double toX, double toY) {
+        return Math.atan2(toY - fromY, toX - fromX);
     }
 
-    private static double applyLimits(double value, double min, double max) {
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
-    }
-
-    private void moveRobot(IRobotModel robot, double velocity, double angularVelocity, double duration) {
-        velocity = applyLimits(velocity, 0, MAX_VELOCITY);
-        angularVelocity = applyLimits(angularVelocity, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
-        double currentX = robot.getPositionX();
-        double currentY = robot.getPositionY();
-        double currentDirection = robot.getDirection();
-
-        double newX = currentX + velocity / angularVelocity *
-                (Math.sin(currentDirection + angularVelocity * duration) -
-                        Math.sin(currentDirection));
-        if (!Double.isFinite(newX)) {
-            newX = currentX + velocity * duration * Math.cos(currentDirection);
-        }
-        double newY = currentY - velocity / angularVelocity *
-                (Math.cos(currentDirection + angularVelocity * duration) -
-                        Math.cos(currentDirection));
-        if (!Double.isFinite(newY)) {
-            newY = currentY + velocity * duration * Math.sin(currentDirection);
-        }
-        robot.setPosition(newX, newY);
-
-        double newDirection = asNormalizedRadians(currentDirection + angularVelocity * duration);
-        robot.setDirection(newDirection);
-    }
-
-    private static double asNormalizedRadians(double angle) {
-        while (angle < 0) {
+    private double normalizeAngle(double angle) {
+        while (angle < -Math.PI) {
             angle += 2 * Math.PI;
         }
-        while (angle >= 2 * Math.PI) {
+        while (angle >= Math.PI) {
             angle -= 2 * Math.PI;
         }
         return angle;
+    }
+
+    private void moveRobot(IRobotModel robot, double velocity, double direction, double duration) {
+        double newX = robot.getPositionX() + velocity * Math.cos(direction) * duration;
+        double newY = robot.getPositionY() + velocity * Math.sin(direction) * duration;
+        robot.setPosition(newX, newY);
     }
 }

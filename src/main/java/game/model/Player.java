@@ -1,16 +1,23 @@
 package game.model;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable {
     private IRobotModel robot;
     private TargetModel robotTarget;
-    private Image robotSkin;
+    private Shape robotShape; // Используем Shape вместо Image
 
-    public Player(IRobotModel robot, TargetModel robotTarget, Image robotSkin) {
+    // Конструктор с принятием Shape вместо Image
+    public Player(IRobotModel robot, TargetModel robotTarget, Shape robotShape) {
         this.robot = robot;
         this.robotTarget = robotTarget;
-        this.robotSkin = robotSkin;
+        this.robotShape = robotShape;
+    }
+
+    // Геттер для фигуры робота
+    public Shape getRobotShape() {
+        return robotShape;
     }
 
     public IRobotModel getRobot() {
@@ -19,10 +26,6 @@ public class Player {
 
     public TargetModel getRobotTarget() {
         return robotTarget;
-    }
-
-    public Image getRobotSkin() {
-        return robotSkin;
     }
 
     public void setRobotTarget(Point point) {

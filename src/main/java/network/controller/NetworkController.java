@@ -4,6 +4,7 @@ import game.model.Game;
 import game.model.Player;
 import network.model.Client;
 import network.model.Server;
+import authentication.PlayerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,11 +13,13 @@ import java.util.List;
 public class NetworkController {
     private final Server server;
     private final Game game;
+    private final PlayerFactory playerFactory;
     private final List<ClientHandler> clientHandlers;
 
-    public NetworkController(Game game) {
+    public NetworkController(Game game, String tokenFilePath) throws IOException {
         this.game = game;
         this.server = new Server();
+        this.playerFactory = new PlayerFactory(tokenFilePath);
         this.clientHandlers = new ArrayList<>();
     }
 
@@ -40,32 +43,17 @@ public class NetworkController {
 
         @Override
         public void run() {
-            try {
-                String authToken = client.receiveData();
-                Player player = findPlayerByAuthToken(authToken);
-
-                if (player != null) {
-                    addPlayerToGame(player);
-                    sendDataToClient(player);
-                } else {
-                    client.sendData("Ошибка: игрок не найден.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private Player findPlayerByAuthToken(String authToken) {
-            // Реализуйте вашу логику поиска игрока по токену авторизации
-            // Например, можно пройтись по списку всех игроков и найти соответствующего игрока
-            return null;
+            String authToken = client.receiveData();
+            Player player = playerFactory.createPlayer(authToken);
+            addPlayerToGame(player);
+            sendDataToClient(player);
         }
 
         private void addPlayerToGame(Player player) {
             game.addPlayer(player);
         }
 
-        private void sendDataToClient(Player player) throws IOException {
+        private void sendDataToClient(Player player) {
             // Отправляем данные о игроке клиенту
             // Например, можно отправить все данные о игроке или только необходимую часть
         }
