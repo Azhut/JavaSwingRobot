@@ -1,33 +1,57 @@
-
 package game.view;
 
+import game.controller.GameController;
+import game.model.Game;
 import game.model.IRobotModel;
-import game.model.ModelLoader;
 import game.model.RobotModel;
-import game.view.GameVisualizer;
+import game.model.TargetModel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameWindow extends JInternalFrame {
-    private final IRobotModel robotModel=new RobotModel();
+public class GameWindow  extends JInternalFrame {
+    private final GameVisualizer gameVisualizer;
+    private final GameController gameController;
+    private final Game game;
 
+    // Конструктор
     public GameWindow() {
-        super("Игровое поле", true, true, true);
+        setTitle("Моя игра");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Создание объекта игры
+        this.game = new Game();
 
+        // Создание визуализатора игры
+        this.gameVisualizer = new GameVisualizer(game);
 
-        GameVisualizer m_visualizer = new GameVisualizer(robotModel);
+        // Создание контроллера игры
+        this.gameController = new GameController(game);
 
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(m_visualizer, BorderLayout.CENTER);
+        // Установка размеров окна
+        int width = 800; // Пример ширины
+        int height = 600; // Пример высоты
+        setPreferredSize(new Dimension(width, height));
 
-        getContentPane().add(panel);
+        // Добавление визуализатора в окно
+        add(gameVisualizer);
 
         pack();
+
     }
 
-    public IRobotModel getRobotModel() {
-        return robotModel;
+    // Метод для обновления отображения роботов на игровом поле
+    public void updateRobots() {
+        gameController.setRobots(game.getRobots()); // Обновляем роботов через контроллер
+        gameVisualizer.repaint(); // Перерисовать визуализатор
+    }
+
+    // Метод для обновления отображения целей для роботов на игровом поле
+    public void updateTargets() {
+        for (IRobotModel robot : game.getRobots()) {
+            TargetModel target = game.getRobotTarget(robot);
+            gameController.setRobotTarget(robot, target); // Устанавливаем цель для робота через контроллер
+        }
+        gameVisualizer.repaint(); // Перерисовать визуализатор
     }
 }

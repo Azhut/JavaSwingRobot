@@ -46,8 +46,8 @@ public class MainApplicationFrame extends JFrame {
         GameWindow gameWindow = new GameWindow();
         addWindow(gameWindow);
 
-        RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
-        addWindow(robotCoordinatesWindow);
+//        RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getRobotModel());
+//        addWindow(robotCoordinatesWindow);
 
 //        configManager.loadConfig(desktopPane, this);
 
