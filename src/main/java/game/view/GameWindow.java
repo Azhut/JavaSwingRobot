@@ -3,13 +3,15 @@ package game.view;
 import game.controller.GameController;
 import game.model.Game;
 import game.model.IRobotModel;
-import game.model.RobotModel;
+import game.model.Player;
 import game.model.TargetModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GameWindow  extends JInternalFrame {
+public class GameWindow extends JInternalFrame {
     private final GameVisualizer gameVisualizer;
     private final GameController gameController;
     private final Game game;
@@ -37,21 +39,6 @@ public class GameWindow  extends JInternalFrame {
         add(gameVisualizer);
 
         pack();
-
     }
 
-    // Метод для обновления отображения роботов на игровом поле
-    public void updateRobots() {
-        gameController.setRobots(game.getRobots()); // Обновляем роботов через контроллер
-        gameVisualizer.repaint(); // Перерисовать визуализатор
-    }
-
-    // Метод для обновления отображения целей для роботов на игровом поле
-    public void updateTargets() {
-        for (IRobotModel robot : game.getRobots()) {
-            TargetModel target = game.getRobotTarget(robot);
-            gameController.setRobotTarget(robot, target); // Устанавливаем цель для робота через контроллер
-        }
-        gameVisualizer.repaint(); // Перерисовать визуализатор
-    }
 }

@@ -14,6 +14,6 @@ public interface IRobotModel {
 
     void setDirection(double direction);
 
-    void drawRobot(Graphics2D g, double x, double y, double direction);
+//    void drawRobot(Graphics2D g, double x, double y, double direction);
 
 }

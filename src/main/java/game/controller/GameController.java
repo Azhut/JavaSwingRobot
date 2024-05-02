@@ -2,7 +2,7 @@ package game.controller;
 
 import game.model.Game;
 import game.model.IRobotModel;
-import game.model.RobotModel;
+import game.model.Player;
 import game.model.TargetModel;
 
 import java.awt.Point;
@@ -36,34 +36,35 @@ public class GameController extends MouseAdapter {
     }
 
     public void setTargetPosition(Point p) {
-        List<IRobotModel> robots = game.getRobots();
-        for (IRobotModel robot : robots) {
-            game.setRobotTarget(robot, p);
+        List<Player> players = game.getPlayers();
+        for (Player player : players) {
+            player.setRobotTarget(p);
         }
     }
 
     public void onModelUpdateEvent() {
-        List<IRobotModel> robots = game.getRobots();
-        for (IRobotModel robotModel : robots) {
-            TargetModel target = game.getRobotTarget(robotModel);
+        List<Player> players = game.getPlayers();
+        for (Player player : players) {
+            IRobotModel robot = player.getRobot();
+            TargetModel target = player.getRobotTarget();
             if (target == null) {
                 continue;
             }
-            double distance = distance(target.getX(), target.getY(), robotModel.getPositionX(), robotModel.getPositionY());
+            double distance = distance(target.getX(), target.getY(), robot.getPositionX(), robot.getPositionY());
             if (distance < 0.5) {
                 continue;
             }
             double velocity = MAX_VELOCITY;
-            double angleToTarget = angleTo(robotModel.getPositionX(), robotModel.getPositionY(), target.getX(), target.getY());
+            double angleToTarget = angleTo(robot.getPositionX(), robot.getPositionY(), target.getX(), target.getY());
             double angularVelocity = 0;
 
-            if (robotModel.getDirection() - angleToTarget > Math.PI) {
-                robotModel.setDirection(robotModel.getDirection() - 2 * Math.PI);
-            } else if (robotModel.getDirection() - angleToTarget < Math.PI) {
-                robotModel.setDirection(robotModel.getDirection() + 2 * Math.PI);
+            if (robot.getDirection() - angleToTarget > Math.PI) {
+                robot.setDirection(robot.getDirection() - 2 * Math.PI);
+            } else if (robot.getDirection() - angleToTarget < Math.PI) {
+                robot.setDirection(robot.getDirection() + 2 * Math.PI);
             }
 
-            double deltaAngle = angleToTarget - robotModel.getDirection();
+            double deltaAngle = angleToTarget - robot.getDirection();
             if (deltaAngle > Math.PI) {
                 deltaAngle -= 2 * Math.PI;
             } else if (deltaAngle < -Math.PI) {
@@ -72,7 +73,7 @@ public class GameController extends MouseAdapter {
 
             angularVelocity = Math.signum(deltaAngle) * MAX_ANGULAR_VELOCITY;
 
-            moveRobot(robotModel, velocity, angularVelocity, 10);
+            moveRobot(robot, velocity, angularVelocity, 10);
         }
     }
 
@@ -96,12 +97,12 @@ public class GameController extends MouseAdapter {
         return value;
     }
 
-    private void moveRobot(IRobotModel robotModel, double velocity, double angularVelocity, double duration) {
+    private void moveRobot(IRobotModel robot, double velocity, double angularVelocity, double duration) {
         velocity = applyLimits(velocity, 0, MAX_VELOCITY);
         angularVelocity = applyLimits(angularVelocity, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
-        double currentX = robotModel.getPositionX();
-        double currentY = robotModel.getPositionY();
-        double currentDirection = robotModel.getDirection();
+        double currentX = robot.getPositionX();
+        double currentY = robot.getPositionY();
+        double currentDirection = robot.getDirection();
 
         double newX = currentX + velocity / angularVelocity *
                 (Math.sin(currentDirection + angularVelocity * duration) -
@@ -115,10 +116,10 @@ public class GameController extends MouseAdapter {
         if (!Double.isFinite(newY)) {
             newY = currentY + velocity * duration * Math.sin(currentDirection);
         }
-        robotModel.setPosition(newX, newY);
+        robot.setPosition(newX, newY);
 
         double newDirection = asNormalizedRadians(currentDirection + angularVelocity * duration);
-        robotModel.setDirection(newDirection);
+        robot.setDirection(newDirection);
     }
 
     private static double asNormalizedRadians(double angle) {
@@ -129,14 +130,5 @@ public class GameController extends MouseAdapter {
             angle -= 2 * Math.PI;
         }
         return angle;
-    }
-
-    public void setRobots(List<IRobotModel> robots) {
-        game.setRobots(robots);
-    }
-
-    public void setRobotTarget(IRobotModel robot, TargetModel target) {
-        Point point=new Point(target.getX(), target.getY());
-        game.setRobotTarget(robot, point);
     }
 }

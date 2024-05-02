@@ -3,13 +3,12 @@ package game.view;
 import game.controller.GameController;
 import game.model.Game;
 import game.model.IRobotModel;
+import game.model.Player;
 import game.model.TargetModel;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,15 +41,18 @@ public class GameVisualizer extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        List<IRobotModel> robots = game.getRobots();
-        for (IRobotModel robot : robots) {
-            paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection());
-            TargetModel target = game.getRobotTarget(robot);
+        List<Player> players = game.getPlayers();
+        for (Player player : players) {
+            IRobotModel robot = player.getRobot();
+            Image robotSkin = player.getRobotSkin();
+            paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection(), robotSkin);
+            TargetModel target = player.getRobotTarget();
             if (target != null) {
                 drawTarget(g2d, target.getX(), target.getY());
             }
         }
     }
+
 
     private void drawTarget(Graphics2D g, int x, int y) {
         g.setColor(Color.GREEN);
@@ -67,12 +69,12 @@ public class GameVisualizer extends JPanel {
         g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
-    private void paintRobot(Graphics2D g, double x, double y, double direction) {
-        try {
-            // Здесь должен быть вызов метода отрисовки робота
-            // Например, robot.drawRobot(g, x, y, direction);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void paintRobot(Graphics2D g, double x, double y, double direction, Image robotSkin) {
+        int imageWidth = robotSkin.getWidth(this);
+        int imageHeight = robotSkin.getHeight(this);
+        g.rotate(Math.toRadians(direction), x, y); // Поворот изображения в соответствии с направлением
+        g.drawImage(robotSkin, (int) (x - imageWidth / 2), (int) (y - imageHeight / 2), this);
+        g.rotate(-Math.toRadians(direction), x, y); // Возвращаем угол поворота к исходному состоянию
     }
+
 }
