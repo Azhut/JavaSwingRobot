@@ -12,7 +12,7 @@ public class ServerModel
     {
         try
         {
-            serverSocket = new ServerSocket(8000);
+            serverSocket = new ServerSocket(8080);
         }
         catch (IOException e)
         {

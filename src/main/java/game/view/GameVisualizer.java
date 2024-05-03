@@ -2,76 +2,75 @@ package game.view;
 
 import game.controller.GameController;
 import game.model.Game;
-import game.model.IRobotModel;
 import game.model.Player;
-import game.model.TargetModel;
 
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 
-public class GameVisualizer extends JPanel {
-    private final Game game;
+public class GameVisualizer extends JPanel implements KeyListener {
     private final GameController gameController;
+    private final Game game;
 
-    public GameVisualizer(Game game) {
+    public GameVisualizer(GameController gameController, Game game) {
+        this.gameController = gameController;
         this.game = game;
-        this.gameController = new GameController(game);
-
-        Timer timer = new Timer("events generator", true);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                onRedrawEvent();
-            }
-        }, 0, 50);
-
-        addMouseListener(gameController);
-        setDoubleBuffered(true);
-    }
-
-    protected void onRedrawEvent() {
-        SwingUtilities.invokeLater(this::repaint);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        List<Player> players = game.getPlayers();
-        for (Player player : players) {
-            IRobotModel robot = player.getRobot();
+        for (Player player : game.getPlayers()) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(Color.RED);
+
             Shape robotShape = player.getRobotShape();
-            paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection(), robotShape); // Передаем Shape вместо Image
-            TargetModel target = player.getRobotTarget();
-            if (target != null) {
-                drawTarget(g2d, target.getX(), target.getY());
+
+
+            double posX = player.getRobot().getPositionX();
+            double posY = player.getRobot().getPositionY();
+
+            AffineTransform transform = AffineTransform.getTranslateInstance(posX, posY);
+            g2d.draw(transform.createTransformedShape(robotShape));
+
+            // Проверяем выход за границы окна и возвращаем робота с другой стороны
+            Rectangle bounds = this.getBounds();
+            if (posX < bounds.getMinX()) {
+                player.getRobot().setPosition(bounds.getMaxX(), posY);
+            } else if (posX > bounds.getMaxX()) {
+                player.getRobot().setPosition(bounds.getMinX(), posY);
             }
+            if (posY < bounds.getMinY()) {
+                player.getRobot().setPosition(posX, bounds.getMaxY());
+            } else if (posY > bounds.getMaxY()) {
+                player.getRobot().setPosition(posX, bounds.getMinY());
+            }
+            g2d.dispose();
         }
     }
 
-    private void drawTarget(Graphics2D g, int x, int y) {
-        g.setColor(Color.GREEN);
-        fillOval(g, x, y, 5, 5);
-        g.setColor(Color.BLACK);
-        drawOval(g, x, y, 5, 5);
+    @Override
+    public void keyPressed(KeyEvent e) {
+        gameController.keyPressed(e);
+
+        repaint();
     }
 
-    private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.fillOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+        // Не используется
     }
 
-    private static void drawOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+        // Не используется
     }
 
-    private void paintRobot(Graphics2D g, double x, double y, double direction, Shape robotShape) {
-        g.rotate(Math.toRadians(direction), x, y);
-        g.draw(robotShape); // Рисуем фигуру робота
-        g.rotate(-Math.toRadians(direction), x, y);
-    }
 }

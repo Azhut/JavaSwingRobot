@@ -8,7 +8,7 @@ import java.net.Socket;
 public class ClientTest
 {
     public static void main(String[] args) throws IOException {
-        Socket clientSocket = new Socket("127.0.0.1", 8000);
+        Socket clientSocket = new Socket("127.0.0.1", 8080);
 
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
