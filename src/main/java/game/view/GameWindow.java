@@ -1,12 +1,13 @@
 package game.view;
 
-import authentication.PlayerFactory;
 import game.controller.GameController;
 import game.model.Game;
 import game.model.Player;
+import game.model.RobotModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer gameVisualizer;
@@ -19,24 +20,23 @@ public class GameWindow extends JInternalFrame {
 
 
         this.game = new Game();
-        this.gameVisualizer = new GameVisualizer(game);
         this.gameController = new GameController(game);
-
-        PlayerFactory playerFactory = new PlayerFactory("tokens.txt");
-        Player player = playerFactory.createPlayer("egor");
-        Player player2 = playerFactory.createPlayer("grisha");
-        game.addPlayer(player);
-        game.addPlayer(player2);
+        this.gameVisualizer = new GameVisualizer(gameController, game);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(gameVisualizer, BorderLayout.CENTER);
-
         getContentPane().add(panel);
-
-
+        gameVisualizer.requestFocusInWindow();
         add(gameVisualizer);
 
+        Player player = new Player(new RobotModel(), new Rectangle2D.Double(100, 100, 100, 100));
+        Player player2 = new Player(new RobotModel(), new Rectangle2D.Double(130, 50, 100, 40 ));
+        game.addPlayer(player);
+        game.addPlayer(player2);
+
+
         pack();
+
     }
 
 }

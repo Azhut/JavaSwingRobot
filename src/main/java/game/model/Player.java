@@ -4,36 +4,29 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Player implements Serializable {
-    private IRobotModel robot;
-    private TargetModel robotTarget;
-    private Shape robotShape;
-
-
-    public Player() {
-
+    public RobotModel getRobot() {
+        return robot;
     }
 
+    private final RobotModel robot;
+    private final Shape robotShape;
 
-    public Player(IRobotModel robot, TargetModel robotTarget, Shape robotShape) {
+    public Player(RobotModel robot, Shape robotShape) {
         this.robot = robot;
-        this.robotTarget = robotTarget;
         this.robotShape = robotShape;
     }
-
 
     public Shape getRobotShape() {
         return robotShape;
     }
 
-    public IRobotModel getRobot() {
-        return robot;
+    public void moveRobot(int deltaX, int deltaY) {
+        System.out.println("Moving robot by: " + deltaX + ", " + deltaY);
+        double currentX = robot.getPositionX();
+        double currentY = robot.getPositionY();
+        robot.setPosition(currentX + deltaX, currentY + deltaY);
     }
 
-    public TargetModel getRobotTarget() {
-        return robotTarget;
-    }
 
-    public void setRobotTarget(Point point) {
-        this.robotTarget = new TargetModel(point.x, point.y);
-    }
+
 }

@@ -46,5 +46,4 @@ public class RobotModel extends Observable implements IRobotModel, Serializable 
         notifyObservers();
     }
 
-
 }
