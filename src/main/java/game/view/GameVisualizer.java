@@ -17,7 +17,6 @@ public class GameVisualizer extends JPanel implements KeyListener {
     public GameVisualizer(GameController gameController, Game game) {
         this.gameController = gameController;
         this.game = game;
-        setPreferredSize(new Dimension(400, 400));
         addKeyListener(this);
         setFocusable(true);
         requestFocusInWindow();
@@ -26,16 +25,13 @@ public class GameVisualizer extends JPanel implements KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Отрисовка робота для каждого игрока в игре
         for (Player player : game.getPlayers()) {
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(Color.RED); // Цвет робота
+            g2d.setColor(Color.RED);
 
-            // Получаем форму робота
             Shape robotShape = player.getRobotShape();
 
-            // Получаем координаты робота
+
             double posX = player.getRobot().getPositionX();
             double posY = player.getRobot().getPositionY();
 

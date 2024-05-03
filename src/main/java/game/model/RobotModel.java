@@ -9,11 +9,10 @@ import java.util.Observable;
 public class RobotModel extends Observable implements IRobotModel, Serializable {
     private double positionX;
     private double positionY;
-    private double direction;
 
     public RobotModel() {
-        this.positionX = 400;
-        this.positionY = 400;
+        this.positionX = 100;
+        this.positionY = 100;
     }
 
     @Override
@@ -24,18 +23,6 @@ public class RobotModel extends Observable implements IRobotModel, Serializable 
     @Override
     public double getPositionY() {
         return positionY;
-    }
-
-    @Override
-    public double getDirection() {
-        return direction;
-    }
-
-    @Override
-    public void setDirection(double direction) {
-        this.direction = direction;
-        setChanged();
-        notifyObservers();
     }
 
     @Override

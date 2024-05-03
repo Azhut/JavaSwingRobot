@@ -1,38 +1,40 @@
-
 package game.view;
 
-import game.model.IRobotModel;
+import game.model.Player;
+import game.model.RobotModel;
+import game.model.Game;
 
 import javax.swing.*;
-import java.util.Observable;
+import java.awt.*;
+import java.util.List;
 import java.util.Observer;
 
-/**
- * Окно вывода координат робота
- */
-public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
-    private JLabel coordinatesLabel;
-
-    public RobotCoordinatesWindow(IRobotModel robotModel) {
+public class RobotCoordinatesWindow extends JInternalFrame {
+    public RobotCoordinatesWindow(Game game) {
         super("Robot Coordinates", true, true, true, true);
 
-        coordinatesLabel = new JLabel("Robot coordinates: ");
-        add(coordinatesLabel);
+        JTextArea coordinatesTextArea = new JTextArea();
+        coordinatesTextArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(coordinatesTextArea);
+        getContentPane().add(scrollPane);
 
-        ((Observable) robotModel).addObserver(this);
-
-        setVisible(true);
-    }
-
-    private void updateCoordinates(IRobotModel robot) {
-        coordinatesLabel.setText("Robot coordinates: (" + robot.getPositionX() + ", " + robot.getPositionY() + ")");
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof IRobotModel) {
-            IRobotModel robot = (IRobotModel) o;
-            updateCoordinates(robot);
+        StringBuilder coordinatesText = new StringBuilder("Robot coordinates:\n");
+        for (Player player : game.getPlayers()) {
+            RobotModel robot = player.getRobot();
+            robot.addObserver((o, arg) -> {
+                coordinatesText.setLength(0);
+                coordinatesText.append("Robot coordinates:\n");
+                for (Player p : game.getPlayers()) {
+                    RobotModel r = p.getRobot();
+                    coordinatesText.append("Player: ").append("token").append(", Coordinates: (")
+                            .append(r.getPositionX()).append(", ").append(r.getPositionY()).append(")\n");
+                }
+                coordinatesTextArea.setText(coordinatesText.toString());
+            });
         }
+        coordinatesTextArea.setText(coordinatesText.toString());
+
+        pack();
+        setVisible(true);
     }
 }
