@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server
+public class ServerModel
 {
     private ServerSocket serverSocket;
 
@@ -13,7 +13,6 @@ public class Server
         try
         {
             serverSocket = new ServerSocket(8000);
-
         }
         catch (IOException e)
         {
@@ -21,13 +20,12 @@ public class Server
         }
     }
 
-    public Client acceptClient() throws IOException
+    public ClientModel acceptClient() throws IOException
     {
         try
         {
             Socket clientSocket = serverSocket.accept();
-            System.out.println("Подключился клиент: " + clientSocket.getInetAddress());
-            return new Client(clientSocket);
+            return new ClientModel(clientSocket);
         }
         catch (IOException e)
         {

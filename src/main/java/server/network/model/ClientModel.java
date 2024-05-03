@@ -3,12 +3,12 @@ package server.network.model;
 import java.io.*;
 import java.net.Socket;
 
-public class Client
+public class ClientModel
 {
     private final Socket socket;
     private final BufferedReader input;
 
-    public Client(Socket socket) throws IOException
+    public ClientModel(Socket socket) throws IOException
     {
         this.socket = socket;
 
@@ -25,6 +25,17 @@ public class Client
     public String getInetAddress()
     {
         return socket.getInetAddress().toString();
+    }
+
+    public OutputStream getOutputStream() throws IOException {
+        try
+        {
+            return socket.getOutputStream();
+        }
+        catch (IOException e)
+        {
+            throw new IOException(e);
+        }
     }
 
 

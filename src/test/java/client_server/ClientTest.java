@@ -15,6 +15,7 @@ public class ClientTest
                         clientSocket.getInputStream()));
 
         String message = reader.readLine();
+
         System.out.println(message);
 
         clientSocket.close();

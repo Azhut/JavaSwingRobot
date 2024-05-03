@@ -1,6 +1,4 @@
 package client_server;
-
-import game.classLoader.NetworkClassLoader;
 import log.Logger;
 
 import java.io.*;

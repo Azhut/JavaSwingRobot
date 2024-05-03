@@ -23,8 +23,8 @@ public class ConfigManager extends FileManager
 
     /**
      * Сохраняет конфигурацию приложения
-     * @param desktopPane - внутренние фреймы
-     * @param jFrame - основной фрейм
+     * @param desktopPane внутренние фреймы
+     * @param jFrame основной фрейм
      */
     public void saveConfig(JDesktopPane desktopPane, JFrame jFrame)
     {
@@ -50,8 +50,8 @@ public class ConfigManager extends FileManager
 
     /**
      * Загружает конфигурацию приложения
-     * @param desktopPane - внутренние фреймы
-     * @param jFrame - основной фрейм
+     * @param desktopPane внутренние фреймы
+     * @param jFrame основной фрейм
      */
     public void loadConfig(JDesktopPane desktopPane, JFrame jFrame)
     {
