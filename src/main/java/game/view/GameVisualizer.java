@@ -38,6 +38,18 @@ public class GameVisualizer extends JPanel implements KeyListener {
             AffineTransform transform = AffineTransform.getTranslateInstance(posX, posY);
             g2d.draw(transform.createTransformedShape(robotShape));
 
+            // Проверяем выход за границы окна и возвращаем робота с другой стороны
+            Rectangle bounds = this.getBounds();
+            if (posX < bounds.getMinX()) {
+                player.getRobot().setPosition(bounds.getMaxX(), posY);
+            } else if (posX > bounds.getMaxX()) {
+                player.getRobot().setPosition(bounds.getMinX(), posY);
+            }
+            if (posY < bounds.getMinY()) {
+                player.getRobot().setPosition(posX, bounds.getMaxY());
+            } else if (posY > bounds.getMaxY()) {
+                player.getRobot().setPosition(posX, bounds.getMinY());
+            }
             g2d.dispose();
         }
     }
