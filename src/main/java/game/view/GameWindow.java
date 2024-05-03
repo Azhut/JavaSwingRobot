@@ -24,7 +24,9 @@ public class GameWindow extends JInternalFrame {
 
         PlayerFactory playerFactory = new PlayerFactory("tokens.txt");
         Player player = playerFactory.createPlayer("egor");
+        Player player2 = playerFactory.createPlayer("grisha");
         game.addPlayer(player);
+        game.addPlayer(player2);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(gameVisualizer, BorderLayout.CENTER);
