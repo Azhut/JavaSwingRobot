@@ -35,7 +35,6 @@ public class GameVisualizer extends JPanel implements KeyListener {
             double posX = player.getRobot().getPositionX();
             double posY = player.getRobot().getPositionY();
 
-            // Транслируем и масштабируем форму робота в соответствии с текущими координатами
             AffineTransform transform = AffineTransform.getTranslateInstance(posX, posY);
             g2d.draw(transform.createTransformedShape(robotShape));
 
@@ -46,21 +45,21 @@ public class GameVisualizer extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("Key pressed in GameVisualizer: " + e.getKeyCode());
-        // Передача события нажатия клавиши в GameController
+
         gameController.keyPressed(e);
-        // Перерисовка компонента после перемещения робота
+
         repaint();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-//        System.out.println("Key typed: " + e.getKeyChar());
+
         // Не используется
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-//        System.out.println("Key released: " + e.getKeyCode());
+
         // Не используется
     }
 

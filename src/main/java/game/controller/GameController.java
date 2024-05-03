@@ -43,9 +43,7 @@ public class GameController {
     }
 
 
-
-
-    private void moveRobots(int deltaX, int deltaY) {
+    private void moveRobots(int deltaX, int deltaY) { //TODO: Здесь просто можно дополнительно передавать робота, которого нужно подвинуть
         for (Player player : game.getPlayers()) {
             player.moveRobot(deltaX, deltaY);
         }

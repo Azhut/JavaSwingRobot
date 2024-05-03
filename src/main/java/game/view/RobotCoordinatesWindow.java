@@ -1,13 +1,10 @@
 package game.view;
 
+import game.model.Game;
 import game.model.Player;
 import game.model.RobotModel;
-import game.model.Game;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.List;
-import java.util.Observer;
 
 public class RobotCoordinatesWindow extends JInternalFrame {
     public RobotCoordinatesWindow(Game game) {

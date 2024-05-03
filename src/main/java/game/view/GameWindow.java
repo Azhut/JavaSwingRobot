@@ -30,7 +30,7 @@ public class GameWindow extends JInternalFrame {
         add(gameVisualizer);
 
         Player player = new Player(new RobotModel(), new Rectangle2D.Double(10, 10, 100, 100));
-        Player player2 = new Player(new RobotModel(), new Rectangle2D.Double(1, 10, 100, 40 ));
+        Player player2 = new Player(new RobotModel(), new Rectangle2D.Double(1, 10, 100, 40));
         game.addPlayer(player);
         game.addPlayer(player2);
 
