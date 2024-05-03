@@ -18,7 +18,7 @@ public class GameController extends MouseAdapter {
     private static final double MAX_VELOCITY = 0.5;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
     private static final double STOP_DISTANCE = 0.1;
-    private static final double SLOW_DOWN_DISTANCE = 0.5; // Расстояние, на котором начинаем замедляться
+    private static final double SLOW_DOWN_DISTANCE = 0.5;
 
     public GameController(Game game) {
         this.game = game;
@@ -64,13 +64,13 @@ public class GameController extends MouseAdapter {
             if (distance > STOP_DISTANCE) {
                 double velocity = Math.min(MAX_VELOCITY, distance);
                 if (distance < SLOW_DOWN_DISTANCE) {
-                    velocity *= distance / SLOW_DOWN_DISTANCE; // Замедляемся, когда приближаемся к цели
+                    velocity *= distance / SLOW_DOWN_DISTANCE;
                 }
                 moveRobot(robot, velocity, robot.getDirection(), 50);
             } else {
-                // Если робот достиг цели, остановить его
-                robot.setDirection(angleToTarget); // Выравниваем направление
-                moveRobot(robot, 0, robot.getDirection(), 0); // Скорость = 0
+
+                robot.setDirection(angleToTarget);
+                moveRobot(robot, 0, robot.getDirection(), 0);
             }
         }
     }

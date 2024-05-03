@@ -1,32 +1,24 @@
+import fileManagers.ConfigManager;
+import game.view.GameWindow;
+import log.Logger;
+import log.view.LogWindow;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.*;
 
-import fileManagers.ConfigManager;
-import game.view.GameWindow;
-import game.view.RobotCoordinatesWindow;
-import log.view.LogWindow;
-import log.Logger;
-
-/**
- * Главное окно
- */
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private boolean disposed = false;
     private final ConfigManager configManager = new ConfigManager();
+    private final ResourceBundle messagesBundle;
+    private boolean disposed = false;
 
     public MainApplicationFrame() {
-
-
-        ResourceBundle messagesBundle = ResourceBundle.getBundle("messages", Locale.getDefault());
-
+        messagesBundle = ResourceBundle.getBundle("messages", Locale.getDefault());
 
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -70,7 +62,7 @@ public class MainApplicationFrame extends JFrame {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
         setMinimumSize(logWindow.getSize());
         logWindow.pack();
-        Logger.debug("Протокол работает");
+        Logger.debug(messagesBundle.getString("log_protocol_working"));
         return logWindow;
     }
 
@@ -87,11 +79,11 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private JMenu generateLookAndFeelMenu() {
-        JMenu lookAndFeelMenu = new JMenu("Режим отображения");
+        JMenu lookAndFeelMenu = new JMenu(messagesBundle.getString("look_and_feel_menu_label"));
         lookAndFeelMenu.setMnemonic(KeyEvent.VK_V);
-        lookAndFeelMenu.getAccessibleContext().setAccessibleDescription("Управление режимом отображения");
-        lookAndFeelMenu.add(createLookAndFeelMenuItem("Системная схема", KeyEvent.VK_S, UIManager.getSystemLookAndFeelClassName()));
-        lookAndFeelMenu.add(createLookAndFeelMenuItem("Универсальная схема", KeyEvent.VK_U, UIManager.getCrossPlatformLookAndFeelClassName()));
+        lookAndFeelMenu.getAccessibleContext().setAccessibleDescription(messagesBundle.getString("look_and_feel_menu_description"));
+        lookAndFeelMenu.add(createLookAndFeelMenuItem(messagesBundle.getString("system_scheme_label"), KeyEvent.VK_S, UIManager.getSystemLookAndFeelClassName()));
+        lookAndFeelMenu.add(createLookAndFeelMenuItem(messagesBundle.getString("universal_scheme_label"), KeyEvent.VK_U, UIManager.getCrossPlatformLookAndFeelClassName()));
         return lookAndFeelMenu;
     }
 
@@ -105,11 +97,11 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private JMenu generateTestMenu() {
-        JMenu testMenu = new JMenu("Тесты");
+        JMenu testMenu = new JMenu(messagesBundle.getString("test_menu_label"));
         testMenu.setMnemonic(KeyEvent.VK_T);
-        testMenu.getAccessibleContext().setAccessibleDescription("Тестовые команды");
-        testMenu.add(createTestMenuItem("Сообщение в лог", KeyEvent.VK_S, () -> Logger.debug("Новая строка")));
-        testMenu.add(createTestMenuItem("Закрыть", KeyEvent.VK_C, this::handleWindowClosing));
+        testMenu.getAccessibleContext().setAccessibleDescription(messagesBundle.getString("test_menu_description"));
+        testMenu.add(createTestMenuItem(messagesBundle.getString("log_message_label"), KeyEvent.VK_S, () -> Logger.debug(messagesBundle.getString("new_log_message"))));
+        testMenu.add(createTestMenuItem(messagesBundle.getString("close_label"), KeyEvent.VK_C, this::handleWindowClosing));
         return testMenu;
     }
 
@@ -125,17 +117,18 @@ public class MainApplicationFrame extends JFrame {
             SwingUtilities.updateComponentTreeUI(this);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException e) {
-            // just ignore
         }
     }
 
     private int handleWindowClosing() {
         int option = JOptionPane.showConfirmDialog(
                 this,
-                "Подтвердите выход", // Текст сообщения
-                "Выход",             // Заголовок окна
+                messagesBundle.getString("confirm_exit_message"),
+                messagesBundle.getString("exit_title"),
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
+                JOptionPane.QUESTION_MESSAGE,
+                null
+
         );
 
         if (option == JOptionPane.YES_OPTION) {
@@ -148,5 +141,6 @@ public class MainApplicationFrame extends JFrame {
     public boolean isDisposed() {
         return disposed;
     }
+
 
 }
