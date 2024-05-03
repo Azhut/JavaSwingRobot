@@ -11,12 +11,12 @@ import java.util.LinkedList;
  */
 public class LogWindowSource
 {
-    private final LogStorage2 m_messages;
+    private final LogStorage m_messages;
     private final LinkedList<LogChangeListener> m_listeners;
     private volatile LogChangeListener[] m_activeListeners;
     public LogWindowSource(int iQueueLength)
     {
-        m_messages = new LogStorage2(iQueueLength);
+        m_messages = new LogStorage(iQueueLength);
         m_listeners = new LinkedList<>();
     }
 

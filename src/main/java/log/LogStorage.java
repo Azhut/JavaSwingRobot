@@ -1,117 +1,97 @@
 package log;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-
-/**
- * Структура для хранение логов<br>
- * Представляет из себя очередь ограниченной длины, написанной на связном списке из <b>LogEntry</b>
- */
 public class LogStorage {
-    private final LinkedList<LogEntry> m_source;
-    private int m_capacity;
-    public LogStorage(int size)
-    {
-        m_source = new LinkedList<>();
-        if (size > 0)
-        {
-            m_capacity = size;
-        }
-        else
-        {
-            m_capacity = 1;
-        }
+    private final ConcurrentSkipListMap<Date, LogEntry> storage;
+    private Integer capacity;
+    private final Lock lock;
+
+    public LogStorage(Integer capacity) {
+        this.storage = new ConcurrentSkipListMap<>();
+        this.capacity = capacity;
+        this.lock = new ReentrantLock();
     }
 
-    /**
-     * Добавление <b>logEntry</b> в структуру
-     * @param logEntry - новая запись
-     */
-    public void add(LogEntry logEntry)
-    {
-        synchronized (m_source)
-        {
-            m_source.add(logEntry);
-        }
+    public void add(LogEntry entry) {
+        storage.put(new Date(), entry);
         deleteExtra();
     }
 
-    /**
-     * Ёмкость хранилища
-     * @return m_capacity
-     */
-    public int capacity() { return m_capacity; }
-
-
-    /**
-     * Размер занятого пространства
-     * @return размер
-     */
-    public int size() { return m_source.size(); }
-
-
-    /**
-     * Изменение ёмкости
-     * @param new_size - новый размер
-     * @return удалось ли изменить ёмкомть
-     */
-    public boolean changeCapacity(int new_size)
-    {
-        if (new_size > 0)
+    public Iterable<LogEntry> all() {
+        lock.lock();
+        try
         {
-            m_capacity = new_size;
-            deleteExtra();
-            return true;
+            return storage.values();
         }
-        return false;
+        finally
+        {
+            lock.unlock();
+        }
     }
 
-
-    /**
-     * Возвращает часть структуры с позиции <b>startFrom</b> в количестве <b>count</b>
-     * @param startFrom - начало
-     * @param count - количество
-     * @return - структура для итерирования
-     */
-    public Iterable<LogEntry> range(int startFrom, int count)
-    {
-        synchronized (m_source)
+    public Iterable<LogEntry> range(Integer startFrom, Integer count) {
+        lock.lock();
+        try
         {
-            if (startFrom < 0 || startFrom >= m_source.size())
+            if (startFrom < 0 || startFrom >= storage.size())
             {
                 return Collections.emptyList();
             }
-            int indexTo = Math.min(startFrom + count, m_source.size());
-            return m_source.subList(startFrom, indexTo);
+
+            int indexTo = Math.min(startFrom + count, storage.size() - 1);
+
+            Date startKey = getKeyByIndex(startFrom);
+            if (startKey == null) {
+                return Collections.emptyList();
+            }
+
+            ConcurrentNavigableMap<Date, LogEntry> subMap = storage.subMap(
+                    startKey, true,
+                    getKeyByIndex(indexTo), false
+            );
+
+            return subMap.values();
+        }
+        finally
+        {
+            lock.unlock();
         }
     }
 
-    /**
-     * Возвращает всю структуру
-     * @return структура для итерирования
-     */
-    public Iterable<LogEntry> all()
+    public void changeCapacity(int newSize)
     {
-         synchronized (m_source)
-         {
-             return m_source;
-
-         }
+        if (newSize > 0)
+        {
+            capacity = newSize;
+            deleteExtra();
+        }
     }
 
-
-    /**
-     * Удаляет лишнии записи из списка с начала
-     */
     private void deleteExtra()
     {
-        synchronized (m_source)
+        while (storage.size() > capacity)
         {
-            while (m_source.size() > m_capacity)
-            {
-                m_source.pollFirst();
-            }
+            storage.pollFirstEntry();
         }
     }
 
+    private Date getKeyByIndex(int index)
+    {
+        int i = 0;
+        for (Date key : storage.keySet())
+        {
+            if (i == index)
+            {
+                return key;
+            }
+            i++;
+        }
+        return null;
+    }
 }
