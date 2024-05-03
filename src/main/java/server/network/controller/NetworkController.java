@@ -37,7 +37,7 @@ public class NetworkController
 //                }
 //                System.out.println("Пришедние данные: " + data);
                 OutputStreamWriter writer = new OutputStreamWriter(clientModel.getOutputStream());
-                
+
                 writer.write("Hello from server!");
                 writer.flush();
 
