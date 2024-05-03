@@ -44,8 +44,6 @@ public class GameVisualizer extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key pressed in GameVisualizer: " + e.getKeyCode());
-
         gameController.keyPressed(e);
 
         repaint();
