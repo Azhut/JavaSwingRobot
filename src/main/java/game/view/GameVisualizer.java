@@ -45,7 +45,7 @@ public class GameVisualizer extends JPanel {
         List<Player> players = game.getPlayers();
         for (Player player : players) {
             IRobotModel robot = player.getRobot();
-            Shape robotShape = player.getRobotShape(); // Используем Shape вместо Image
+            Shape robotShape = player.getRobotShape();
             paintRobot(g2d, robot.getPositionX(), robot.getPositionY(), robot.getDirection(), robotShape); // Передаем Shape вместо Image
             TargetModel target = player.getRobotTarget();
             if (target != null) {

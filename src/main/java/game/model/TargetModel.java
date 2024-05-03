@@ -3,8 +3,9 @@ package game.model;
 
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class TargetModel {
+public class TargetModel implements Serializable {
     private int x;
     private int y;
 

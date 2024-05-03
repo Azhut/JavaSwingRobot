@@ -4,12 +4,13 @@ package game.model;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
  * Модель робота
  */
-public class RobotModel extends Observable implements IRobotModel {
+public class RobotModel extends Observable implements IRobotModel, Serializable {
     private double positionX;
     private double positionY;
     private double direction;

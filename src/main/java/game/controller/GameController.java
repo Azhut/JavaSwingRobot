@@ -37,7 +37,7 @@ public class GameController extends MouseAdapter {
         setTargetPosition(e.getPoint());
     }
 
-    public void setTargetPosition(Point p) {
+    public void setTargetPosition(Point p) { //TODO
         List<Player> players = game.getPlayers();
         for (Player player : players) {
             player.setRobotTarget(p);

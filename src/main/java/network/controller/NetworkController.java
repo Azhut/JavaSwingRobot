@@ -16,7 +16,7 @@ public class NetworkController {
     private final PlayerFactory playerFactory;
     private final List<ClientHandler> clientHandlers;
 
-    public NetworkController(Game game, String tokenFilePath) throws IOException {
+    public NetworkController(Game game, String tokenFilePath){
         this.game = game;
         this.server = new Server();
         this.playerFactory = new PlayerFactory(tokenFilePath);

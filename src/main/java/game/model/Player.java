@@ -6,16 +6,21 @@ import java.io.Serializable;
 public class Player implements Serializable {
     private IRobotModel robot;
     private TargetModel robotTarget;
-    private Shape robotShape; // Используем Shape вместо Image
+    private Shape robotShape;
 
-    // Конструктор с принятием Shape вместо Image
+
+    public Player() {
+
+    }
+
+
     public Player(IRobotModel robot, TargetModel robotTarget, Shape robotShape) {
         this.robot = robot;
         this.robotTarget = robotTarget;
         this.robotShape = robotShape;
     }
 
-    // Геттер для фигуры робота
+
     public Shape getRobotShape() {
         return robotShape;
     }

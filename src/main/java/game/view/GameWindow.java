@@ -1,6 +1,6 @@
 package game.view;
 
-import authentication.PlayerSerializer;
+import authentication.PlayerFactory;
 import game.controller.GameController;
 import game.model.Game;
 import game.model.Player;
@@ -10,37 +10,33 @@ import game.model.TargetModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.io.IOException;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer gameVisualizer;
     private final GameController gameController;
     private final Game game;
 
-    // Конструктор
+
+
+
     public GameWindow() {
-        setTitle("Моя игра");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("Игровое поле", true, true, true);
 
 
-        // Создание объекта игры
         this.game = new Game();
-
-
-
-
-        // Создание визуализатора игры
         this.gameVisualizer = new GameVisualizer(game);
-
-        // Создание контроллера игры
         this.gameController = new GameController(game);
 
-        // Установка размеров окна
-        int width = 800; // Пример ширины
-        int height = 600; // Пример высоты
-        setPreferredSize(new Dimension(width, height));
+        PlayerFactory playerFactory=new PlayerFactory("tokens.txt");
+        Player player = playerFactory.createPlayer("egor");
+        game.addPlayer(player);
 
-        // Добавление визуализатора в окно
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(gameVisualizer, BorderLayout.CENTER);
+
+        getContentPane().add(panel);
+
+
         add(gameVisualizer);
 
         pack();
