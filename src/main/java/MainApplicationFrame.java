@@ -1,6 +1,6 @@
 import fileManagers.ConfigManager;
-import game.view.GameWindow;
-import game.view.RobotCoordinatesWindow;
+import game.windows.GameWindow;
+import game.windows.RobotCoordinatesWindow;
 import log.Logger;
 import log.view.LogWindow;
 
@@ -38,7 +38,6 @@ public class MainApplicationFrame extends JFrame {
 
         GameWindow gameWindow = new GameWindow();
         addWindow(gameWindow);
-
 
         RobotCoordinatesWindow robotCoordinatesWindow = new RobotCoordinatesWindow(gameWindow.getGame());
         addWindow(robotCoordinatesWindow);

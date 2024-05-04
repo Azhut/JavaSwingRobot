@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 /**
  * Форма создания дампа логов двух типов: все или в диапозоне
  */
-public class MakeDumpForm implements LogWindowInnerWidget{
+public class MakeDumpForm implements LogWindowInnerWidget {
     private final JToggleButton m_isRange;
     private final JTextField m_start;
     private final JTextField m_count;

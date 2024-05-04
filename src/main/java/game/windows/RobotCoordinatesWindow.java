@@ -1,4 +1,4 @@
-package game.view;
+package game.windows;
 
 import game.model.Game;
 import game.model.Player;
