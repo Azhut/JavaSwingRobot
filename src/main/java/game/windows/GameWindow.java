@@ -2,13 +2,9 @@ package game.windows;
 
 import game.controller.GameController;
 import game.model.Game;
-import game.model.Player;
-import game.model.RobotModel;
-import game.view.GameVisualizer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class GameWindow extends JInternalFrame
 {
@@ -18,13 +14,13 @@ public class GameWindow extends JInternalFrame
 
         this.gameController = new GameController(new Game());
 
-        JPanel gameVisualizer = gameController.getGamePanel();
+        JPanel gamePanel = gameController.getGamePanel();
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(gameVisualizer, BorderLayout.CENTER);
+        panel.add(gamePanel, BorderLayout.CENTER);
         getContentPane().add(panel);
-        gameVisualizer.requestFocusInWindow();
-        add(gameVisualizer);
+        gamePanel.requestFocusInWindow();
+        add(gamePanel);
 
 //        Player player2 = new Player(new RobotModel(new Rectangle2D.Double(1, 10, 100, 40)) );
 //        gameController.addPlayer(player);

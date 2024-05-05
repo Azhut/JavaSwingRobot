@@ -14,11 +14,12 @@ public class Player implements Serializable {
         robot.move(deltaX, deltaY);
     }
 
-    public RobotModel getRobot() {
+    public RobotModel getRobot()
+    {
         return robot;
     }
 
-    public Shape getRobotShape() {
+    public Shape getShape() {
         return robot.getRobotShape();
     }
 }

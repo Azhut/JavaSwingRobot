@@ -9,7 +9,8 @@ public class RobotModel extends Observable implements Serializable, IRobotModel 
     private double positionX;
     private double positionY;
 
-    public RobotModel(Shape robotShape) {
+    public RobotModel(Shape robotShape)
+    {
         this.robotShape = robotShape;
         this.positionX = 100;
         this.positionY = 100;

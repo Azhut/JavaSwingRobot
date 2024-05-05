@@ -3,10 +3,10 @@ package game.controller;
 import game.model.Game;
 import game.model.Player;
 import game.model.RobotModel;
-import game.view.GameVisualizer;
-import game.view.PlayerComponent;
+import game.view.GameView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
@@ -16,21 +16,17 @@ import java.util.List;
 public class GameController
 {
     private final Game game;
-    private final GameVisualizer view;
+    private final GameView view;
 
     public GameController(Game game)
     {
         List<Player> players = new LinkedList<>();
         Player player = new Player(new RobotModel(new Rectangle2D.Double(10, 10, 100, 100)));
-
         players.add(player);
-
-        List<PlayerComponent> playerComponents = new LinkedList<>();
-        playerComponents.add(new PlayerComponent(player));
+        game.addPlayer(player);
 
         this.game = game;
-        game.addPlayer(player);
-        this.view = new GameVisualizer(playerComponents);
+        this.view = new GameView(players);
         this.view.addKeyListener(new KeyAdapter()
         {
                 @Override
@@ -42,22 +38,23 @@ public class GameController
         );
     }
 
-    public void keyPressed(KeyEvent e)
+    private void keyPressed(KeyEvent e)
     {
+        Player player = game.getPlayers().get(0);
         int keyCode = e.getKeyCode();
         switch (keyCode)
         {
             case KeyEvent.VK_UP, KeyEvent.VK_W:
-                moveRobots(0, -10);
+                moveRobot(player, 0, -10);
                 break;
             case KeyEvent.VK_DOWN, KeyEvent.VK_S:
-                moveRobots(0, 10);
+                moveRobot(player,0, 10);
                 break;
             case KeyEvent.VK_LEFT, KeyEvent.VK_A:
-                moveRobots(-10, 0);
+                moveRobot(player,-10, 0);
                 break;
             case KeyEvent.VK_RIGHT, KeyEvent.VK_D:
-                moveRobots(10, 0);
+                moveRobot(player,10, 0);
                 break;
         }
         view.repaint();
@@ -73,17 +70,35 @@ public class GameController
         return game;
     }
 
-    public void addPlayer(Player player)
+    private void moveRobot(Player player, int deltaX, int deltaY)
     {
-        game.addPlayer(player);
+        player.moveRobot(deltaX, deltaY);
+        checkBounds(player);
     }
 
-
-    private void moveRobots(int deltaX, int deltaY) //TODO: Здесь просто можно дополнительно передавать робота, которого нужно подвинуть
+    private void checkBounds(Player player)
     {
-        for (Player player : game.getPlayers())
+        Rectangle bounds = view.getBounds();
+
+        double posX = player.getRobot().getPositionX();
+        double posY = player.getRobot().getPositionY();
+
+        if (posX < bounds.getMinX())
         {
-            player.moveRobot(deltaX, deltaY);
+            player.getRobot().setPosition(bounds.getMaxX(), posY);
+        }
+        else if (posX > bounds.getMaxX())
+        {
+            player.getRobot().setPosition(bounds.getMinX(), posY);
+        }
+
+        if (posY < bounds.getMinY())
+        {
+            player.getRobot().setPosition(posX, bounds.getMaxY());
+        }
+        else if (posY > bounds.getMaxY())
+        {
+            player.getRobot().setPosition(posX, bounds.getMinY());
         }
     }
 }
