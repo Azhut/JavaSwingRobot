@@ -39,6 +39,7 @@ public class RobotSender
         try (Socket socket = new Socket(serverAddress, serverPort);
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream()))
         {
+            //TODO: здесь изменить то, что нужно отправлять о роботе, поменять OutputStream, если ObjectOutputStream не подходит
             outputStream.writeObject(model);
             outputStream.flush();
         }

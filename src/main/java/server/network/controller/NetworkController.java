@@ -36,6 +36,7 @@ public class NetworkController
 
                 System.out.println("Пришедние данные: " + data);
 
+
 //                client.close();
             }
 
