@@ -3,8 +3,8 @@ package game.controller;
 import game.model.Game;
 import game.model.Player;
 import game.model.RobotModel;
+import game.network.RobotSender;
 import game.view.GameView;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -18,6 +18,8 @@ public class GameController
     private final Game game;
     private final GameView view;
 
+    private RobotSender sender;
+
     public GameController(Game game)
     {
         List<Player> players = new LinkedList<>();
@@ -29,13 +31,16 @@ public class GameController
         this.view = new GameView(players);
         this.view.addKeyListener(new KeyAdapter()
         {
-                @Override
-                public void keyPressed(KeyEvent e)
-                {
-                    GameController.this.keyPressed(e);
-                }
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                GameController.this.keyPressed(e);
             }
-        );
+        });
+
+        this.sender = new RobotSender(players.get(0).getRobot(), "127.0.0.1", 8080);
+
+        this.sender.startSending();
     }
 
     private void keyPressed(KeyEvent e)

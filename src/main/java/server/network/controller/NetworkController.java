@@ -4,13 +4,11 @@ import server.network.model.ClientModel;
 import server.network.model.ServerModel;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Objects;
 
 public class NetworkController
 {
     private final ServerModel serverModel;
-
 
     public NetworkController()
     {
@@ -19,29 +17,26 @@ public class NetworkController
 
     public void startServer()
     {
-        ClientModel clientModel = null;
+        ClientModel client = null;
         try
         {
             serverModel.start();
 
             while (true)
             {
-                clientModel = serverModel.acceptClient();
-                System.out.println("Подключился клиент: " + clientModel.getInetAddress());
+                client = serverModel.acceptClient();
+                System.out.println("Подключился клиент: " + client.getInetAddress());
 
-//                String data = clientModel.se();
-//
-//                if (data.isEmpty())
-//                {
-//                    break;
-//                }
-//                System.out.println("Пришедние данные: " + data);
-                OutputStreamWriter writer = new OutputStreamWriter(clientModel.getOutputStream());
+                String data = client.receiveData();
 
-                writer.write("Hello from server!");
-                writer.flush();
+                if (data.isEmpty())
+                {
+                    break;
+                }
 
-                System.out.println("Сообщение отправлено!");
+                System.out.println("Пришедние данные: " + data);
+
+//                client.close();
             }
 
         }
@@ -56,9 +51,9 @@ public class NetworkController
             {
                 serverModel.stop();
 
-                if (!Objects.isNull(clientModel))
+                if (!Objects.isNull(client))
                 {
-                    clientModel.close();
+                    client.close();
                 }
             }
             catch (IOException e)
