@@ -6,59 +6,46 @@ import server.network.model.ServerModel;
 import java.io.IOException;
 import java.util.Objects;
 
-public class NetworkController
-{
+public class NetworkController {
     private final ServerModel serverModel;
+    private final RobotDataManager robotDataManager;
 
-    public NetworkController()
-    {
+    public NetworkController() {
         this.serverModel = new ServerModel();
+        this.robotDataManager = RobotDataManager.getInstance("test.ser");
     }
 
-    public void startServer()
-    {
+    public void startServer() {
         ClientModel client = null;
-        try
-        {
+        try {
             serverModel.start();
 
-            while (true)
-            {
+            while (true) {
                 client = serverModel.acceptClient();
                 System.out.println("Подключился клиент: " + client.getInetAddress());
+                //TODO: один раз подключился, далее в цикле обновление данных робота. Или нет?
 
                 String data = client.receiveData();
-
-                if (data.isEmpty())
-                {
+                if (data.isEmpty()) {
                     break;
                 }
 
                 System.out.println("Пришедние данные: " + data);
 
+                robotDataManager.serializeAndSaveData(data);
 
-//                client.close();
+
             }
-
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println("При работе сервера возникла ошибка: " + e.getMessage());
             e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 serverModel.stop();
-
-                if (!Objects.isNull(client))
-                {
+                if (!Objects.isNull(client)) {
                     client.close();
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.out.println("При закрытии сервера произошла ошибка: " + e.getMessage());
                 e.printStackTrace();
             }

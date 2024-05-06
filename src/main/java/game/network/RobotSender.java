@@ -34,12 +34,11 @@ public class RobotSender
         }, 0, 200, TimeUnit.MILLISECONDS);
     }
 
-    private void sendRobotInfo() throws IOException
+        private void sendRobotInfo() throws IOException
     {
         try (Socket socket = new Socket(serverAddress, serverPort);
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream()))
         {
-            //TODO: здесь изменить то, что нужно отправлять о роботе, поменять OutputStream, если ObjectOutputStream не подходит
             outputStream.writeObject(model);
             outputStream.flush();
         }

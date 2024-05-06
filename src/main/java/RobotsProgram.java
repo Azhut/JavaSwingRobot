@@ -7,7 +7,7 @@ import java.util.Locale;
  */
 public class RobotsProgram {
     public static void main(String[] args) {
-        Locale.setDefault(new Locale("en", "EN"));
+        Locale.setDefault(new Locale("ru", "RU"));
 
 //
 //        Player player = new Player(new RobotModel(), new TargetModel(550, 400), new Rectangle2D.Double(100, 100, 100, 100));

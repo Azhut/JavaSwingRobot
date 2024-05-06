@@ -6,12 +6,12 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerFactory {
+public class PlayerAuthentication {
     private final Map<String, String> tokenToFileMap;
 
-    public PlayerFactory(String tokensFile) {
+    public PlayerAuthentication() {
         tokenToFileMap = new HashMap<>();
-        loadTokens(tokensFile);
+        loadTokens("authentication/tokens.txt");
     }
 
     private void loadTokens(String tokensFile) {
